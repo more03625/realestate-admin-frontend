@@ -1,0 +1,15 @@
+.add-new-post__editor .ql-container,
+.add-new-post__editor .ql-editor {
+  min-height: 400px;
+}
+/* #example_filter {
+  margin-top: 5px;
+} */
+/* #dataTables_info {
+  margin-left: 12px;
+  margin-right: 12px;
+}
+#example_paginate {
+  margin-left: 12px;
+  margin-right: 12px;
+} */
