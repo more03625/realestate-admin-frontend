@@ -14,7 +14,12 @@ export const capitalize = s => {
 export const Endpoints = {
   changeUserStatus: "admin/changeUserStatus",
   getSellers: "admin/getSellers",
-  getCategories: "admin/getCategories"
+  getCategories: "admin/getCategories",
+  editCategory: "admin/editCategory",
+  addCategory: "admin/addCategory",
+  getSubCategories: "admin/getSubCategories",
+  addSubCategory: "admin/addSubCategory",
+  editSubCategory: "admin/editSubCategory"
 };
 
 export const successToast = (message = "✅" + " Success!") => {
@@ -40,3 +45,7 @@ export const errorToast = (message = "❌" + " Error") => {
     progress: undefined
   });
 };
+export const errorStyle = {
+  color: 'red',
+  fontSize: '14px'
+}

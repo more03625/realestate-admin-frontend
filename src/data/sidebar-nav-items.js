@@ -1,15 +1,15 @@
-export default function() {
+export default function () {
   return [
-    {
-      title: "Category",
-      to: "/category",
-      htmlBefore: '<i class="material-icons">edit</i>',
-      htmlAfter: ""
-    },
     {
       title: "Sellers",
       to: "/sellers",
       htmlBefore: '<i class="material-icons">people</i>',
+      htmlAfter: ""
+    },
+    {
+      title: "Category",
+      to: "/category",
+      htmlBefore: '<i class="material-icons">edit</i>',
       htmlAfter: ""
     },
     {
@@ -54,10 +54,6 @@ export default function() {
       htmlBefore: '<i class="material-icons">error</i>',
       to: "/errors"
     },
-    {
-      title: "Dashboard",
-      htmlBefore: '<i class="material-icons">error</i>',
-      to: "/"
-    }
+
   ];
 }
