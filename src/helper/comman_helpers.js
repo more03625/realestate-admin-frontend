@@ -2,9 +2,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const Host =
-  window.location.host === "localhost:3000" || "localhost:3001"
-    ? "http://localhost:5254/"
-    : "http://neprealestate.com:5254/";
+  window.location.host === "localhost:3000" ? "http://localhost:5254/" : "http://neprealestate.com:5254/";
 
 export const capitalize = s => {
   if (typeof s !== "string") return "";
