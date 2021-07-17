@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const Host =
-  window.location.host === "localhost:3000"
+  window.location.host === "localhost:3000" || "localhost:3001"
     ? "http://localhost:5254/"
     : "http://neprealestate.com:5254/";
 
@@ -19,7 +19,15 @@ export const Endpoints = {
   addCategory: "admin/addCategory",
   getSubCategories: "admin/getSubCategories",
   addSubCategory: "admin/addSubCategory",
-  editSubCategory: "admin/editSubCategory"
+  editSubCategory: "admin/editSubCategory",
+  getCities: "admin/getCities",
+  addCity: "admin/addCity",
+  editCity: "admin/editCity",
+  getStates: "users/getStates",
+  Login: "users/login",
+  getFeatures: "admin/getfeatures",
+  addfeatures: "admin/addfeatures",
+  editFeatures: "admin/editfeatures"
 };
 
 export const successToast = (message = "✅" + " Success!") => {

@@ -48,6 +48,8 @@ const SubCategory = () => {
   const handleAddClose = () => setAddShow(false);
   const handleClose = () => setEditModalShow(false);
 
+  const [categoriesError, setCategoriesError] = useState();
+  const [categories, setCategories] = useState([]);
 
   const addSubCategoryBtn = () => {
     setAddNewCategoryError(null);
@@ -120,9 +122,23 @@ const SubCategory = () => {
       }
     });
   };
-
+  const getCategories = () => {
+    var getCategoryURL = Host + Endpoints.getCategories;
+    Axios.get(getCategoryURL, {
+      headers: {
+        'token': process.env.REACT_APP_API_KEY,
+      }
+    }).then(response => {
+      if (response.data.error === true) {
+        setCategoriesError(response.data.title);
+      } else {
+        setCategories(response.data.data.categories);
+      }
+    });
+  }
   useEffect(() => {
     getSubCategories();
+    getCategories();
   }, []);
   const replaceModalItem = (index) => {
     setSubCategoryID(subCategories[index].id);
@@ -159,7 +175,7 @@ const SubCategory = () => {
                 </button>
               </h6>
             </CardHeader>
-            <CardBody className="p-0 pb-3">
+            <CardBody className="p-0 pb-3 m-2">
               <table id="subCategoryTable" className="table mb-0">
                 <thead className="bg-light">
                   <tr>
@@ -170,9 +186,11 @@ const SubCategory = () => {
                     <th scope="col" className="border-0">
                       Sub Category
                     </th>
+                    {/*
                     <th scope="col" className="border-0">
                       Status
                     </th>
+                    */}
                     <th scope="col" className="border-0">
                       Action
                     </th>
@@ -184,6 +202,7 @@ const SubCategory = () => {
                     <tr key={value.id}>
                       <td>{value.id}</td>
                       <td>{value.name}</td>
+                      {/*
                       <td>
                         {value.status === "active" ? (
                           <span style={{ color: "green" }}>
@@ -195,6 +214,7 @@ const SubCategory = () => {
                           </span>
                         )}
                       </td>
+                    */}
                       <td>
                         <button type="button" className="btn btn-success" onClick={() => replaceModalItem(index)}>
                           Edit
@@ -215,21 +235,24 @@ const SubCategory = () => {
         </Modal.Header>
         <Modal.Body>
           <FormGroup>
-            <label htmlFor="feInputAddress">Category Name</label>
-            <FormInput id="feInputAddress" placeholder="Category Name" onChange={(e) => setNewCategoryName(e.target.value)} defaultValue={modalData && modalData.name !== undefined ? modalData.name : ''} />
-            <input type="hidden" name="categoryID" value={modalData && modalData.id !== undefined ? modalData.id : ''} />
-            <p style={errorStyle}>{addSubCategoryNameError}</p>
-          </FormGroup>
-          <FormGroup>
-            <label htmlFor="feInputState">State</label>
-            <FormSelect id="feInputState" onChange={(e) => setCategoryID(e.target.value)}>
-              <option>{modalData && modalData.category_name}</option>
-              {subCategories.map((value, index) => (
+            <label htmlFor="feInputState">Category</label>
+            {console.log(modalData)}
+            <FormSelect id="feInputState" onChange={(e) => setCategoryID(e.target.value)} value={modalData && modalData.category_id ? modalData.category_id : ''}>
+              <option>Choose Status</option>
+              {categories.map((value, index) => (
                 <option key={value.id} value={value.id}>{value.name}</option>
               ))}
             </FormSelect>
             <p style={errorStyle}>{addNewCategoryError}</p>
           </FormGroup>
+
+          <FormGroup>
+            <label htmlFor="feInputAddress">Category Name</label>
+            <FormInput id="feInputAddress" placeholder="Category Name" onChange={(e) => setNewCategoryName(e.target.value)} defaultValue={modalData && modalData.name !== undefined ? modalData.name : ''} />
+            <input type="hidden" name="categoryID" value={modalData && modalData.id !== undefined ? modalData.id : ''} />
+            <p style={errorStyle}>{addSubCategoryNameError}</p>
+          </FormGroup>
+
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
@@ -249,7 +272,7 @@ const SubCategory = () => {
             <label htmlFor="feInputState">Category Name</label>
             <FormSelect id="feInputState" onChange={(e) => setAddNewCategory(e.target.value)}>
               <option>Choose Category</option>
-              {subCategories.map((value, index) => (
+              {categories.map((value, index) => (
                 <option key={value.id} value={value.id}>{value.name}</option>
               ))}
 

@@ -39,7 +39,7 @@ const Category = () => {
   const handleAddClose = () => setAddShow(false);
 
   const addCategoryBtn = () => {
-    alert(adddCategoryName);
+
     if (adddCategoryName === '' || adddCategoryName === null || adddCategoryName === undefined) {
       setAddCategoryNameError("Please enter a valid category name!");
     } else {
@@ -59,8 +59,6 @@ const Category = () => {
       })
       setAddShow(false);
     }
-
-
   }
   var categoryData = {
     "id": categoryID,
@@ -139,7 +137,7 @@ const Category = () => {
                 </button>
               </h6>
             </CardHeader>
-            <CardBody className="p-0 pb-3">
+            <CardBody className="p-0 pb-3 m-2">
               <table className="table mb-0">
                 <thead className="bg-light">
                   <tr>
@@ -149,9 +147,11 @@ const Category = () => {
                     <th scope="col" className="border-0">
                       Category Name
                     </th>
+                    {/*
                     <th scope="col" className="border-0">
                       Status
                     </th>
+                    */}
                     <th scope="col" className="border-0">
                       Action
                     </th>
@@ -162,6 +162,8 @@ const Category = () => {
                     <tr key={value.id}>
                       <td>{value.id}</td>
                       <td>{value.name}</td>
+                      {/*
+
                       <td>
                         {value.status === "active" ? (
                           <span style={{ color: "green" }}>
@@ -173,6 +175,7 @@ const Category = () => {
                           </span>
                         )}
                       </td>
+                    */}
                       <td>
                         <button type="button" className="btn btn-success" onClick={() => replaceModalItem(index)}>
                           Edit
@@ -199,13 +202,14 @@ const Category = () => {
             <input type="hidden" name="categoryID" value={modalData && modalData.id !== undefined ? modalData.id : ''} />
           </FormGroup>
           <FormGroup>
-
+            {/*
             <label htmlFor="feInputState">State</label>
             <FormSelect id="feInputState" onChange={(e) => setNewStatus(e.target.value)}>
               <option>Choose Status</option>
               <option value="active">Acive</option>
               <option value="deactive">DeAcive</option>
             </FormSelect>
+              */}
           </FormGroup>
 
         </Modal.Body>
@@ -231,12 +235,14 @@ const Category = () => {
             <FormInput id="feInputAddress" placeholder="Category Name" onChange={(e) => setAddCategoryName(e.target.value)} />
           </FormGroup>
           <FormGroup>
-            <label htmlFor="feInputState">State</label>
+            {/*
+            <label htmlFor="feInputState">Status</label>
             <FormSelect id="feInputState" onChange={(e) => setNewStatus(e.target.value)}>
               <option>Choose Status</option>
               <option value="active">Acive</option>
               <option value="deactive">DeAcive</option>
             </FormSelect>
+          */}
           </FormGroup>
           <FormGroup>
             <p className="text-center justify-content-center" style={{ color: "red" }}>{adddCategoryNameError}</p>

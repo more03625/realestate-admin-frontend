@@ -41,7 +41,9 @@ const Sellers = () => {
   const [active, setActive] = useState();
 
   const getUsers = () => {
-    Axios.post(url, null, {
+    Axios.post(url, {
+      "limit": 200
+    }, {
       headers: {
         token: process.env.REACT_APP_API_KEY
       }
@@ -112,7 +114,7 @@ const Sellers = () => {
             <CardHeader className="border-bottom">
               <h6 className="m-0">List of all Sellers!</h6>
             </CardHeader>
-            <CardBody className="p-0 pb-3">
+            <CardBody className="p-0 pb-3 m-2">
               <table id="example" className="table mb-0">
                 <thead className="bg-light">
                   <tr>
@@ -162,6 +164,15 @@ const Sellers = () => {
                         >
                           <i className="material-icons">edit</i>
                         </button>
+                        <Link
+                          to="#"
+                          target="_blank"
+                          type="button"
+                          className="btn btn-info mr-1"
+                        >
+                          <i className="material-icons">visibility</i>
+                        </Link>
+
                       </td>
                     </tr>
                   ))}

@@ -1,8 +1,8 @@
 {
   "name": "shards-dashboard-lite-react",
+  "homepage": "http://neprealestate.com/admin",
   "version": "1.0.0",
   "private": true,
-  "homepage": "http://neprealestate.com/admin",
   "dependencies": {
     "axios": "^0.21.1",
     "camelize": "^1.0.0",
