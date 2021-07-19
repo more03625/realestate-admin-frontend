@@ -25,7 +25,7 @@ import {
 } from "../../helper/comman_helpers";
 import $ from "jquery";
 
-const SubCategory = () => {
+const Content = () => {
     $(document).ready(function () {
         setTimeout(function () {
             $("#subCategoryTable").DataTable();
@@ -341,4 +341,4 @@ const SubCategory = () => {
     );
 };
 
-export default SubCategory;
+export default Content;

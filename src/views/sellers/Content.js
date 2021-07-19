@@ -13,7 +13,7 @@ import {
   FormCheckbox
 } from "shards-react";
 import Axios from "axios";
-import PageTitle from "../components/common/PageTitle";
+import PageTitle from "../../components/common/PageTitle";
 import { Modal, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Badge from "react-bootstrap/Badge";
@@ -25,8 +25,9 @@ import {
   Endpoints,
   successToast,
   errorToast
-} from "../helper/comman_helpers";
-const Sellers = () => {
+} from "../../helper/comman_helpers";
+
+const Content = () => {
   $(document).ready(function () {
     setTimeout(function () {
       $("#example").DataTable();
@@ -205,4 +206,4 @@ const Sellers = () => {
   );
 };
 
-export default Sellers;
+export default Content;

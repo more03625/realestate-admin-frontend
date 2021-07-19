@@ -8,12 +8,9 @@ import {
     CardHeader,
     CardBody,
 } from "shards-react";
-import PageTitle from "../components/common/PageTitle";
+import PageTitle from "../../components/common/PageTitle";
 
-
-
-const Dashboard = () => {
-
+const Content = () => {
     return (
         <Container fluid className="main-content-container px-4">
             {/* Page Header */}
@@ -41,4 +38,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default Content;
