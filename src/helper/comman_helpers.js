@@ -4,11 +4,18 @@ import "react-toastify/dist/ReactToastify.css";
 export const Host =
   window.location.host === "localhost:3000" ? "http://localhost:5254/" : "http://neprealestate.com:5254/";
 
+export const FrontEndURL = window.location.host === "localhost:3000" ? "http://localhost:3001/" : "http://neprealestate.com/";
+
 export const capitalize = s => {
   if (typeof s !== "string") return "";
   return s.charAt(0).toUpperCase() + s.slice(1);
 };
-
+export const convertToSlug = (blogTitle) => {
+  return blogTitle
+    .toLowerCase()
+    .replace(/ /g, "-")
+    .replace(/[^\w-]+/g, "");
+};
 export const Endpoints = {
   changeUserStatus: "admin/changeUserStatus",
   getSellers: "admin/getSellers",
@@ -25,7 +32,8 @@ export const Endpoints = {
   Login: "users/login",
   getFeatures: "admin/getfeatures",
   addfeatures: "admin/addfeatures",
-  editFeatures: "admin/editfeatures"
+  editFeatures: "admin/editfeatures",
+  getProperties: "property/getProperties"
 };
 
 export const successToast = (message = "✅" + " Success!") => {

@@ -12,6 +12,7 @@ import Sellers from "./views/sellers/Sellers";
 import Category from "./views/Category/Category";
 import Subcategory from "./views/Subcategory/Subcategory";
 import Features from "./views/features/Feature";
+import Properties from "./views/properties/Properties";
 import Login from "./views/login/Login";
 import Logout from "./views/Logout";
 import LoggedInProtected from "./views/protected/LoggedInProtected";
@@ -46,6 +47,10 @@ export default () => (
 
       <Route path="/location/features">
         <LoggedInProtected component={Features} />
+      </Route>
+
+      <Route path="/properties">
+        <LoggedInProtected component={Properties} />
       </Route>
 
       <Route path="/logout">

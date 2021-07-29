@@ -37,6 +37,12 @@ export default function () {
       htmlBefore: '<i class="material-icons">maps_home_work</i>',
       htmlAfter: ""
     },
+    {
+      title: "Properties",
+      to: "/properties",
+      htmlBefore: '<i class="material-icons">format_list_bulleted</i>',
+      htmlAfter: ""
+    },
     // {
     //   title: "Blog Dashboard",
     //   to: "/blog-overview",
