@@ -13,12 +13,12 @@ export default function () {
       htmlBefore: '<i class="material-icons">people</i>',
       htmlAfter: ""
     },
-    {
-      title: "Category",
-      to: "/category",
-      htmlBefore: '<i class="material-icons">category</i>',
-      htmlAfter: ""
-    },
+    // {
+    //   title: "Category",
+    //   to: "/category",
+    //   htmlBefore: '<i class="material-icons">category</i>',
+    //   htmlAfter: ""
+    // },
     {
       title: "Sub Category",
       to: "/sub-category",

@@ -39,6 +39,7 @@ const Content = () => {
     const [subCategories, setSubCategories] = useState([]);
     const [requiredItem, setRequiredItem] = useState();
     const [showEditModal, setEditModalShow] = useState(false);
+    const [showStatusModal, setshowStatusModal] = useState(false);
     const [addNewCategory, setAddNewCategory] = useState();
     const [addSubCategoryName, setAddSubCategoryName] = useState();
     const [addShow, setAddShow] = useState(false);
@@ -48,7 +49,7 @@ const Content = () => {
 
     const handleAddClose = () => setAddShow(false);
     const handleClose = () => setEditModalShow(false);
-
+    const handleStatusClose = () => setshowStatusModal(false);
     const [categoriesError, setCategoriesError] = useState();
     const [categories, setCategories] = useState([]);
 
@@ -78,6 +79,7 @@ const Content = () => {
             setAddShow(false);
         }
     }
+    
 
     const updateSubCategory = () => {
         setAddSubCategoryNameError("");
@@ -141,6 +143,33 @@ const Content = () => {
         getSubCategories();
         getCategories();
     }, []);
+
+    const updateStatus = (id, status) => {
+        var data = {
+          id,
+          status: status === "active" ? "deactive" : "active"
+        };
+        var url = Host + Endpoints.editSubCategory;
+        Axios.post(url, data, {
+          headers: {
+            token: process.env.REACT_APP_API_KEY
+        }
+        }).then(response => {
+            if (response.data.error === true) {
+                errorToast(response.data.title);
+            } else {
+                successToast(response.data.title);
+                getSubCategories();
+                setshowStatusModal(false);
+            }
+        });
+    };
+
+    const changeStatusModal = index => {
+        setRequiredItem(index); // set Index
+        setshowStatusModal(true); // Open Modal
+    };
+
     const replaceModalItem = (index) => {
         setSubCategoryID(subCategories[index].id);
         setCategoryID(subCategories[index].category_id);
@@ -187,11 +216,12 @@ const Content = () => {
                                         <th scope="col" className="border-0">
                                             Sub Category
                                         </th>
-                                        {/*
-                    <th scope="col" className="border-0">
-                      Status
-                    </th>
-                    */}
+                                        <th scope="col" className="border-0">
+                                        Category
+                                        </th>
+                                        <th scope="col" className="border-0">
+                                        Status
+                                        </th>
                                         <th scope="col" className="border-0">
                                             Action
                                         </th>
@@ -201,22 +231,28 @@ const Content = () => {
 
                                     {subCategories.map((value, index) => (
                                         <tr key={value.id}>
-                                            <td>{value.id}</td>
+                                            <td>{index+1}</td>
                                             <td>{value.name}</td>
-                                            {/*
-                      <td>
-                        {value.status === "active" ? (
-                          <span style={{ color: "green" }}>
-                            {capitalize(value.status)}
-                          </span>
-                        ) : (
-                          <span style={errorStyle}>
-                            {capitalize(value.status)}
-                          </span>
-                        )}
-                      </td>
-                    */}
+                                            <td>{value.category_name}</td>
+                                                                    
                                             <td>
+                                                {value.status === "active" ? (
+                                                <span style={{ color: "green" }}>
+                                                    {capitalize(value.status)}
+                                                </span>
+                                                ) : (
+                                                <span style={errorStyle}>
+                                                    {capitalize('Inactive')}
+                                                </span>
+                                                )}
+                                            </td>
+                                        
+                                            <td>
+                                                <button type="button" className="btn btn-warning mr-1"
+                                                onClick={() => changeStatusModal(index)}
+                                                >
+                                                    <i className="material-icons">edit</i>
+                                                </button>
                                                 <button type="button" className="btn btn-success" onClick={() => replaceModalItem(index)}>
                                                     Edit
                                                 </button>
@@ -229,6 +265,24 @@ const Content = () => {
                     </Card>
                 </Col>
             </Row>
+
+            <Modal show={showStatusModal} onHide={handleStatusClose}>
+                <Modal.Header closeButton>
+                <Modal.Title>Update Status</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure you want to update this Category?</Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={handleStatusClose}>
+                    Close
+                </Button>
+                <Button
+                    variant="danger"
+                    onClick={() => updateStatus(modalData.id, modalData.status)}
+                >
+                    Update
+                </Button>
+                </Modal.Footer>
+            </Modal>
 
             <Modal size="lg" show={showEditModal} onHide={handleClose}>
                 <Modal.Header closeButton>

@@ -200,10 +200,13 @@ const Content = () => {
                                         <th scope="col" className="border-0">
                                             Type
                                         </th>
-                                        {/*<th scope="col" className="border-0">
+                                        <th scope="col" className="border-0">
+                                            Icon
+                                        </th>
+                                        <th scope="col" className="border-0">
                                             Status
                                         </th>
-                                        */}
+                                       
                                         <th scope="col" className="border-0">
                                             Action
                                         </th>
@@ -215,7 +218,8 @@ const Content = () => {
                                             <td>{index + 1}</td>
                                             <td>{value.feature}</td>
                                             <td>{value.type}</td>
-                                            {/*<td>
+                                            <td>{value.icon}</td>
+                                            <td>
                                                 {value.status === true ? (
                                                     <span style={{ color: "green" }}>
                                                         Active
@@ -226,7 +230,7 @@ const Content = () => {
                                                     </span>
                                                 )}
                                             </td>
-                                            */}
+                                           
                                             <td>
                                                 <button type="button" className="btn btn-success" onClick={() => replaceModalItem(index)}>
                                                     Edit

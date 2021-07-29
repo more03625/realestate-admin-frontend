@@ -14,6 +14,7 @@ import Subcategory from "./views/Subcategory/Subcategory";
 import Features from "./views/features/Feature";
 import Properties from "./views/properties/Properties";
 import Login from "./views/login/Login";
+import ForgotPassword from "./views/ForgotPass/ForgotPass";
 import Logout from "./views/Logout";
 import LoggedInProtected from "./views/protected/LoggedInProtected";
 
@@ -59,6 +60,9 @@ export default () => (
 
       <Route exact path="/login">
         <LoggedInProtected component={Login} />
+      </Route>
+
+      <Route exact path="/forgot-password" component={ForgotPassword}>
       </Route>
 
     </Switch>
