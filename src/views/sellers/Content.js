@@ -24,7 +24,8 @@ import {
   Host,
   Endpoints,
   successToast,
-  errorToast
+  errorToast,
+  getUserToken
 } from "../../helper/comman_helpers";
 
 const Content = () => {
@@ -46,7 +47,7 @@ const Content = () => {
       "limit": 200
     }, {
       headers: {
-        token: process.env.REACT_APP_API_KEY
+        token: `${getUserToken().token}`,
       }
     }).then(response => {
       if (response.data.error === true) {
@@ -65,7 +66,7 @@ const Content = () => {
     var url = Host + Endpoints.changeUserStatus;
     Axios.post(url, data, {
       headers: {
-        token: process.env.REACT_APP_API_KEY
+        token: `${getUserToken().token}`,
       }
     }).then(response => {
       if (response.data.error === true) {

@@ -18,7 +18,8 @@ import {
     Host,
     Endpoints,
     successToast,
-    errorToast
+    errorToast,
+    getUserToken
 } from "../../helper/comman_helpers";
 const Content = () => {
     const [categories, setCategories] = useState([]);
@@ -48,7 +49,7 @@ const Content = () => {
                 "name": adddCategoryName
             }, {
                 headers: {
-                    token: process.env.REACT_APP_API_KEY
+                    token: `${getUserToken().token}`,
                 }
             }).then((response) => {
                 if (response.data.error === true) {
@@ -68,7 +69,7 @@ const Content = () => {
         var editCategoryURL = Host + Endpoints.editCategory;
         Axios.post(editCategoryURL, categoryData, {
             headers: {
-                "token": process.env.REACT_APP_API_KEY
+                token: `${getUserToken().token}`,
             }
         }).then((response) => {
             console.log(response.data.error);
@@ -87,7 +88,7 @@ const Content = () => {
         var url = Host + Endpoints.getCategories;
         Axios.get(url, {
             headers: {
-                'token': process.env.REACT_APP_API_KEY,
+                token: `${getUserToken().token}`,
             }
         }).then(response => {
             if (response.data.error === true) {

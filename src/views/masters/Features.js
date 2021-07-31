@@ -18,7 +18,8 @@ import {
     Host,
     Endpoints,
     successToast,
-    errorToast, errorStyle
+    errorToast, errorStyle,
+    getUserToken
 } from "../../helper/comman_helpers";
 import $ from "jquery";
 
@@ -74,7 +75,7 @@ const Features = () => {
                 "type": featureTypeToAdd
             }, {
                 headers: {
-                    token: process.env.REACT_APP_API_KEY
+                    token: `${getUserToken().token}`,
                 }
             }).then((response) => {
                 if (response.data.error === true) {
@@ -105,7 +106,7 @@ const Features = () => {
         else {
             Axios.post(editFeaturesURL, featuresData, {
                 headers: {
-                    "token": process.env.REACT_APP_API_KEY
+                    token: `${getUserToken().token}`,
                 }
             }).then((response) => {
                 if (response.data.error === true) {
@@ -121,7 +122,7 @@ const Features = () => {
         var url = Host + Endpoints.getFeatures;
         Axios.get(url, {
             headers: {
-                token: process.env.REACT_APP_API_KEY,
+                token: `${getUserToken().token}`,
             }
         }).then(response => {
             if (response.data.error === true) {

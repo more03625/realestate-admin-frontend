@@ -19,7 +19,8 @@ import {
     Host,
     Endpoints,
     successToast,
-    errorToast, errorStyle
+    errorToast, errorStyle,
+    getUserToken
 } from "../../helper/comman_helpers";
 import $ from "jquery";
 
@@ -67,7 +68,7 @@ const Content = () => {
                 "name": addSubCategoryName
             }, {
                 headers: {
-                    token: process.env.REACT_APP_API_KEY
+                    token: `${getUserToken().token}`,
                 }
             }).then((response) => {
                 if (response.data.error === true) {
@@ -98,7 +99,7 @@ const Content = () => {
         } else {
             Axios.post(updateSubCategoryURL, categoryData, {
                 headers: {
-                    "token": process.env.REACT_APP_API_KEY
+                    token: `${getUserToken().token}`,
                 }
             }).then((response) => {
                 if (response.data.error === true) {
@@ -115,7 +116,7 @@ const Content = () => {
         var url = Host + Endpoints.getSubCategories;
         Axios.get(url, {
             headers: {
-                'token': process.env.REACT_APP_API_KEY,
+                token: `${getUserToken().token}`,
             }
         }).then(response => {
             if (response.data.error === true) {
@@ -129,7 +130,7 @@ const Content = () => {
         var getCategoryURL = Host + Endpoints.getCategories;
         Axios.get(getCategoryURL, {
             headers: {
-                'token': process.env.REACT_APP_API_KEY,
+                token: `${getUserToken().token}`,
             }
         }).then(response => {
             if (response.data.error === true) {
@@ -152,7 +153,7 @@ const Content = () => {
         var url = Host + Endpoints.editSubCategory;
         Axios.post(url, data, {
           headers: {
-            token: process.env.REACT_APP_API_KEY
+            token: `${getUserToken().token}`,
         }
         }).then(response => {
             if (response.data.error === true) {

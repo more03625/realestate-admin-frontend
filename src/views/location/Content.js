@@ -21,7 +21,8 @@ import {
     Endpoints,
     successToast,
     errorToast,
-    errorStyle
+    errorStyle,
+    getUserToken
 } from "../../helper/comman_helpers";
 import $ from "jquery";
 
@@ -69,7 +70,7 @@ const Content = () => {
                 },
                 {
                     headers: {
-                        token: process.env.REACT_APP_API_KEY
+                        token: `${getUserToken().token}`,
                     }
                 }
             ).then(response => {
@@ -99,7 +100,7 @@ const Content = () => {
         } else {
             Axios.post(updateCityURL, cityData, {
                 headers: {
-                    token: process.env.REACT_APP_API_KEY
+                    token: `${getUserToken().token}`,
                 }
             }).then(response => {
                 if (response.data.error === true) {
@@ -120,7 +121,7 @@ const Content = () => {
             },
             {
                 headers: {
-                    token: process.env.REACT_APP_API_KEY
+                    token: `${getUserToken().token}`,
                 }
             }
         ).then(response => {

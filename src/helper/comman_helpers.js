@@ -31,10 +31,11 @@ export const Endpoints = {
   getStates: "users/getStates",
   Login: "users/login",
   ForgotPassword: "users/forgotPassword",
-  getFeatures: "admin/getfeatures",
+  getFeatures: "admin/getfeatures?id=1",
   addfeatures: "admin/addfeatures",
   editFeatures: "admin/editfeatures",
-  getProperties: "property/getProperties"
+  getProperties: "property/getPropertiesWithFilters?id=1",
+  updatePropertyStatus: "admin/updatePropertyStatus"
 };
 
 export const successToast = (message = "✅" + " Success!") => {
@@ -63,4 +64,8 @@ export const errorToast = (message = "❌" + " Error") => {
 export const errorStyle = {
   color: 'red',
   fontSize: '14px'
+}
+
+export const getUserToken = () => {
+  return JSON.parse(localStorage.getItem('token'));
 }

@@ -18,7 +18,8 @@ import {
     Host,
     Endpoints,
     successToast,
-    errorToast, errorStyle
+    errorToast, errorStyle,
+    getUserToken
 } from "../../helper/comman_helpers";
 import $ from "jquery";
 
@@ -42,39 +43,47 @@ const Content = () => {
     // const [cityIdToEdit, setCityIdToEdit] = useState();
     // const [cityNameToEdit, setCityNameToEdit] = useState();
     // const [stateIdToEdit, setStateIdToEdit] = useState();
+    const [showStatusModal, setshowStatusModal] = useState(false);
     const handleAddClose = () => setAddShow(false);
     const handleClose = () => setEditModalShow(false);
+    const handleStatusClose = () => setshowStatusModal(false);
     // const [states, setStates] = useState([]);
     // const [statesError, setStatesError] = useState();
     const [featureTypeToAdd, setFeatureTypeToAdd] = useState();
     const [featureToAdd, setFeatureToAdd] = useState();
+    const [iconToAdd, setIconToAdd] = useState();
 
     const [featureTypeToAddError, setFeatureTypeToAddError] = useState();
     const [featureToAddError, setFeatureToAddError] = useState();
-
+    const [iconToAddError, setIconToAddError] = useState();
+    
     const clearError = () => {
         setFeatureTypeToAddError("");
         setFeatureToAddError("");
+        setIconToAddError("");
     }
     const [featureIdToEdit, setFeatureIdToEdit] = useState();
     const [featureTypeToEdit, setFeatureTypeToEdit] = useState();
     const [featureToEdit, setFeatureToEdit] = useState();
+    const [iconToEdit, setIconToEdit] = useState();
 
     const addFeatureBtn = () => {
         clearError();
 
-        if (featureTypeToAdd === '' || featureToAdd === '' || featureTypeToAdd === undefined || featureToAdd === undefined) {
+        if (featureTypeToAdd === '' || featureToAdd === '' || featureTypeToAdd === undefined || featureToAdd === undefined || iconToAdd === '' || iconToAdd === undefined) {
             setFeatureTypeToAddError("Please select feature type!")
-            setFeatureToAddError("Please Enter feature");
+            setFeatureToAddError("Please Enter Feature");
+            setIconToAddError("Please Enter Icon");
         }
         else {
             var addFeatureURL = Host + Endpoints.addfeatures;
             Axios.post(addFeatureURL, {
                 "feature": featureToAdd,
-                "type": featureTypeToAdd
+                "type": featureTypeToAdd,
+                "icon": iconToAdd
             }, {
                 headers: {
-                    token: process.env.REACT_APP_API_KEY
+                    token: `${getUserToken().token}`,
                 }
             }).then((response) => {
                 if (response.data.error === true) {
@@ -94,18 +103,20 @@ const Content = () => {
         var featuresData = {
             "id": featureIdToEdit,
             "type": featureTypeToEdit,
-            "feature": featureToEdit
+            "feature": featureToEdit,
+            "icon": iconToEdit
         }
 
-        if (featureTypeToEdit === '' || featureToEdit === '') {
+        if (featureTypeToEdit === '' || featureToEdit === '' || iconToEdit === '') {
 
             setFeatureTypeToAddError("Please select feature type!")
-            setFeatureToAddError("Please Enter feature");
+            setFeatureToAddError("Please Enter Feature");
+            setIconToAddError("Please Enter Icon");
         }
         else {
             Axios.post(editFeaturesURL, featuresData, {
                 headers: {
-                    "token": process.env.REACT_APP_API_KEY
+                    token: `${getUserToken().token}`,
                 }
             }).then((response) => {
                 if (response.data.error === true) {
@@ -121,7 +132,7 @@ const Content = () => {
         var url = Host + Endpoints.getFeatures;
         Axios.get(url, {
             headers: {
-                token: process.env.REACT_APP_API_KEY,
+                token: `${getUserToken().token}`,
             }
         }).then(response => {
             if (response.data.error === true) {
@@ -145,12 +156,40 @@ const Content = () => {
         getFeatures();
         // getStates();
     }, []);
+
+    const updateStatus = (id, status) => {
+        var data = {
+          id,
+          status: status == true ? false : true
+        };
+        var url = Host + Endpoints.editFeatures;
+        Axios.post(url, data, {
+          headers: {
+            token: `${getUserToken().token}`,
+        }
+        }).then(response => {
+            if (response.data.error === true) {
+                errorToast(response.data.title);
+            } else {
+                successToast(response.data.title);
+                getFeatures(); 
+                setshowStatusModal(false);
+            }
+        });
+    };
+
+    const changeStatusModal = index => {
+        setRequiredItem(index); // set Index
+        setshowStatusModal(true); // Open Modal
+    };
+
     const replaceModalItem = (index) => {
         clearError();
 
         setFeatureIdToEdit(features[index].id);
         setFeatureTypeToEdit(features[index].type);
         setFeatureToEdit(features[index].feature);
+        setIconToEdit(features[index].icon);
 
         setRequiredItem(index);
         setEditModalShow(true);
@@ -232,9 +271,11 @@ const Content = () => {
                                             </td>
                                            
                                             <td>
-                                                <button type="button" className="btn btn-success" onClick={() => replaceModalItem(index)}>
+                                                <button type="button" className="btn btn-success mr-1" onClick={() => replaceModalItem(index)}>
                                                     Edit
                                                 </button>
+                                                <button type="button" className="btn btn-warning mr-1" onClick={() => changeStatusModal(index)}
+                                                ><i className="material-icons">edit</i></button>
                                             </td>
                                         </tr>
                                     ))}
@@ -244,6 +285,24 @@ const Content = () => {
                     </Card>
                 </Col>
             </Row>
+
+            <Modal show={showStatusModal} onHide={handleStatusClose}>
+                <Modal.Header closeButton>
+                <Modal.Title>Update Status</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure you want to update this Feature?</Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={handleStatusClose}>
+                    Close
+                </Button>
+                <Button
+                    variant="danger"
+                    onClick={() => updateStatus(modalData.id, modalData.status)}
+                >
+                    Update
+                </Button>
+                </Modal.Footer>
+            </Modal>
 
             <Modal size="lg" show={showEditModal} onHide={handleClose}>
                 <Modal.Header closeButton>
@@ -270,6 +329,12 @@ const Content = () => {
                         <label htmlFor="feInputAddress">Feature Name</label>
                         <FormInput id="feInputAddress" placeholder="Enter Feature Name" onChange={(e) => setFeatureToEdit(e.target.value)} defaultValue={modalData && modalData.feature != undefined ? modalData.feature : ''} />
                         <p style={errorStyle}>{featureToAddError}</p>
+                    </FormGroup>
+
+                    <FormGroup>
+                        <label htmlFor="feInputIcon">Icon Name</label>
+                        <FormInput id="feInputIcon" placeholder="Enter Icon Name" onChange={(e) => setIconToEdit(e.target.value)} defaultValue={modalData && modalData.icon != undefined ? modalData.icon : ''} />
+                        <p style={errorStyle}>{iconToAddError}</p>
                     </FormGroup>
                 </Modal.Body>
                 <Modal.Footer>
@@ -309,6 +374,13 @@ const Content = () => {
                         <FormInput id="feInputAddress" placeholder="Enter Feature Name" onChange={(e) => setFeatureToAdd(e.target.value)} />
                         <p style={errorStyle}>{featureToAddError}</p>
                     </FormGroup>
+
+                    <FormGroup>
+                        <label htmlFor="iconInputAddress">Icon Name</label>
+                        <FormInput id="iconInputAddress" placeholder="Enter Icon Name" onChange={(e) => setIconToAdd(e.target.value)} />
+                        <p style={errorStyle}>{iconToAddError}</p>
+                    </FormGroup>
+                    
 
                 </Modal.Body>
                 <Modal.Footer>

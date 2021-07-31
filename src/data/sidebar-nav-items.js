@@ -43,6 +43,12 @@ export default function () {
       htmlBefore: '<i class="material-icons">format_list_bulleted</i>',
       htmlAfter: ""
     },
+    {
+      title: "My Properties",
+      to: "/my-properties",
+      htmlBefore: '<i class="material-icons">format_list_bulleted</i>',
+      htmlAfter: ""
+    },
     // {
     //   title: "Blog Dashboard",
     //   to: "/blog-overview",
