@@ -9,6 +9,8 @@ import "./shards-dashboard/styles/shards-dashboards.1.1.0.min.css";
 import Dashboard from "./views/Dashboard/Dashboard";
 import City from "./views/location/City";
 import Sellers from "./views/sellers/Sellers";
+import Agents from "./views/Agent/Agents";
+import Subscribers from "./views/Subcribers/Subcribers";
 import Category from "./views/Category/Category";
 import Subcategory from "./views/Subcategory/Subcategory";
 import Features from "./views/features/Feature";
@@ -33,6 +35,14 @@ export default () => (
 
       <Route path="/sellers">
         <LoggedInProtected component={Sellers} />
+      </Route>
+
+      <Route path="/agents">
+        <LoggedInProtected component={Agents} />
+      </Route>
+
+      <Route path="/subscribers">
+        <LoggedInProtected component={Subscribers} />
       </Route>
 
       <Route path="/category" >

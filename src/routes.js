@@ -105,4 +105,4 @@
   //   layout: DefaultLayout,
   //   component: BlogPosts
   // }
-];
+//];

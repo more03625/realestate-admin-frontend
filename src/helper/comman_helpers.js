@@ -19,6 +19,7 @@ export const convertToSlug = (blogTitle) => {
 export const Endpoints = {
   changeUserStatus: "admin/changeUserStatus",
   getSellers: "admin/getSellers",
+  getAgents: "admin/getAgents",
   getCategories: "admin/getCategories",
   editCategory: "admin/editCategory",
   addCategory: "admin/addCategory",
@@ -35,7 +36,9 @@ export const Endpoints = {
   addfeatures: "admin/addfeatures",
   editFeatures: "admin/editfeatures",
   getProperties: "property/getPropertiesWithFilters?id=1",
-  updatePropertyStatus: "admin/updatePropertyStatus"
+  updatePropertyStatus: "admin/updatePropertyStatus", 
+  agentList: "admin/agentList",
+  getSubscribers: "admin/getSubscribers"
 };
 
 export const successToast = (message = "✅" + " Success!") => {
