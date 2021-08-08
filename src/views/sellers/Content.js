@@ -133,6 +133,9 @@ const Content = () => {
                       Phone
                     </th>
                     <th scope="col" className="border-0">
+                      Type
+                    </th>
+                    <th scope="col" className="border-0">
                       Status
                     </th>
                     <th scope="col" className="border-0">
@@ -147,6 +150,7 @@ const Content = () => {
                       <td>{value.name}</td>
                       <td>{value.email}</td>
                       <td>{value.mobile}</td>
+                      <td>{capitalize(value.type)}</td>
                       <td>
                         {value.status === "active" ? (
                           <span style={{ color: "green" }}>
@@ -164,16 +168,16 @@ const Content = () => {
                           className="btn btn-warning mr-1"
                           onClick={() => replaceModalItem(index)}
                         >
-                          <i className="material-icons">edit</i>
+                          <i className="material-icons">build</i>
                         </button>
-                        <Link
+                        {/* <Link
                           to="#"
                           target="_blank"
                           type="button"
                           className="btn btn-info mr-1"
                         >
                           <i className="material-icons">visibility</i>
-                        </Link>
+                        </Link> */}
 
                       </td>
                     </tr>

@@ -13,12 +13,12 @@ export default function () {
       htmlBefore: '<i class="material-icons">people</i>',
       htmlAfter: ""
     },
-    {
-      title: "Agents",
-      to: "/agents",
-      htmlBefore: '<i class="material-icons">person</i>',
-      htmlAfter: ""
-    },
+    // {
+    //   title: "Agents",
+    //   to: "/agents",
+    //   htmlBefore: '<i class="material-icons">person</i>',
+    //   htmlAfter: ""
+    // },
     {
       title: "Subscribers",
       to: "/subscribers",

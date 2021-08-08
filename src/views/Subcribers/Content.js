@@ -201,15 +201,15 @@ const Content = () => {
                 <FormInput readOnly= {true}  defaultValue={modalData && modalData.mobile !== undefined ? modalData.mobile : ''} />
             </FormGroup>
 
-            {/* <FormGroup>
+            <FormGroup>
                 <label>Category</label>
-                <FormInput readOnly= {true}  defaultValue={modalData && modalData.category !== undefined ? modalData.category : ''} />
+                <FormInput readOnly= {true}  defaultValue={modalData && modalData.category_name !== undefined ? modalData.category_name : ''} />
             </FormGroup>
 
             <FormGroup>
                 <label>Sub Category</label>
-                <FormInput readOnly= {true}  defaultValue={modalData && modalData.subcategory !== undefined ? modalData.subcategory : ''} />
-            </FormGroup> */}
+                <FormInput readOnly= {true}  defaultValue={modalData && modalData.sub_category_name !== undefined ? modalData.sub_category_name : ''} />
+            </FormGroup>
 
             <FormGroup>
                 <label>Minimum Price</label>
@@ -223,17 +223,12 @@ const Content = () => {
 
             <FormGroup>
                 <label>City</label>
-                <FormInput readOnly= {true}  defaultValue={modalData && modalData.city !== undefined ? modalData.city : ''} />
+                <FormInput readOnly= {true}  defaultValue={modalData && modalData.city_name !== undefined ? modalData.city_name : ''} />
             </FormGroup>
 
             <FormGroup>
                 <label>State</label>
-                <FormInput readOnly= {true} defaultValue={modalData && modalData.state !== undefined ? modalData.state : ''} />
-            </FormGroup>
-
-            <FormGroup>
-                <label>Status</label>
-                <FormInput readOnly= {true}  defaultValue={modalData && modalData.status !== undefined ? modalData.status : ''} />
+                <FormInput readOnly= {true} defaultValue={modalData && modalData.state_name !== undefined ? modalData.state_name : ''} />
             </FormGroup>
         </Modal.Body>
 

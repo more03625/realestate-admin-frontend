@@ -2557,8 +2557,8 @@ i.material-icons {
   padding: 0.75rem 1.5rem;
 }
 .navbar-brand {
-  padding-top: 0.7rem;
-  padding-bottom: 0.7rem;
+  /* padding-top: 0.7rem; */
+  /* padding-bottom: 0.7rem; */
   margin-right: 1.5rem;
   font-size: 0.9rem;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -4962,7 +4962,7 @@ a.text-accent:hover {
   border-color: #007bff !important;
 }
 .main-navbar .navbar {
-  height: 3.75rem;
+  height: 4.1rem;
 }
 .main-navbar .navbar > * {
   display: -ms-flexbox;
@@ -5100,7 +5100,7 @@ a.text-accent:hover {
 }
 .main-sidebar .navbar-brand {
   overflow: hidden;
-  height: 3.75rem;
+  height: 4.1rem;
   font-size: 1rem;
 }
 .main-sidebar .nav-wrapper {

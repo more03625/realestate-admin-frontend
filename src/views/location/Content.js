@@ -204,10 +204,10 @@ const Content = () => {
                                         <th scope="col" className="border-0">
                                             City
                                         </th>
-                                        {/*  <th scope="col" className="border-0">
-                                            Status
+                                         <th scope="col" className="border-0">
+                                            State
                                         </th>
-                                        */}
+                                       
                                         <th scope="col" className="border-0">
                                             Action
                                         </th>
@@ -218,6 +218,7 @@ const Content = () => {
                                         <tr key={value.id}>
                                             <td>{index + 1}</td>
                                             <td>{value.city_name}</td>
+                                            <td>{value.state_name}</td>
                                             {/*  <td>
                                                 {value.flag === 1 ? (
                                                     <span style={{ color: "green" }}>Active</span>

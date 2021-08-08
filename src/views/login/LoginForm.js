@@ -96,7 +96,7 @@ const LoginForm = () => {
             {loginStatus === true && <Redirect to="/dashboard" />}
 
             <CardHeader className="border-bottom">
-                <h6 className="m-0"><img id="main-logo" className="" src={require("../../images/logo/favicon.jpg")} alt="Shards Dashboard" /> Login To Neprealestate!</h6>
+                <h6 className="m-0"><img id="main-logo" style={{height:70}} className="" src={require("../../images/logo/logo.png")} alt="Shards Dashboard" /> Login To Neprealestate!</h6>
             </CardHeader>
             <ListGroup flush>
                 <ListGroupItem className="p-3">
