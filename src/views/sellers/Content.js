@@ -40,7 +40,8 @@ const Content = () => {
   const [requiredItem, setRequiredItem] = useState();
   const [users, setUsers] = useState([]);
   const [usersError, setUsersError] = useState();
-  const [active, setActive] = useState();
+
+  const [runUseEffect, setRunUseEffect] = useState(false);
 
   const getUsers = () => {
     Axios.post(url, {
@@ -72,6 +73,7 @@ const Content = () => {
       if (response.data.error === true) {
         errorToast(response.data.title);
       } else {
+        setRunUseEffect(!runUseEffect);
         successToast(response.data.title);
       }
     });
@@ -96,7 +98,7 @@ const Content = () => {
 
   useEffect(() => {
     getUsers();
-  }, [active]);
+  }, [runUseEffect]);
 
   return (
     <Container fluid className="main-content-container px-4">
@@ -170,6 +172,13 @@ const Content = () => {
                         >
                           <i className="material-icons">build</i>
                         </button>
+                        <Link
+                          type="button"
+                          className="btn btn-info mr-1"
+                          to={`seller/properties/${value.id}`}
+                        >
+                          <i className="material-icons">home</i>
+                        </Link>
                         {/* <Link
                           to="#"
                           target="_blank"
@@ -194,7 +203,13 @@ const Content = () => {
         <Modal.Header closeButton>
           <Modal.Title>Update Status</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Are you sure you want to Update this user?</Modal.Body>
+        <Modal.Body>
+          Are you sure you want to {`${modalData && modalData.status === 'active' ? 'Deactivate' : 'Activate'}`} this user ?
+
+
+        </Modal.Body>
+
+
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
@@ -203,7 +218,7 @@ const Content = () => {
             variant="danger"
             onClick={() => updateUser(modalData.id, modalData.status)}
           >
-            Update
+            {`${modalData && modalData.status === 'active' ? 'Deactivate' : 'Activate'}`}
           </Button>
         </Modal.Footer>
       </Modal>

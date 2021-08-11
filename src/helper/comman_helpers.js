@@ -2,9 +2,9 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const Host =
-  window.location.host === "localhost:3000" ? "http://localhost:5254/" : "http://neprealestate.com:5254/";
+  window.location.host === "localhost:3001" ? "http://localhost:5254/" : "http://neprealestate.com:5254/";
 
-export const FrontEndURL = window.location.host === "localhost:3000" ? "http://localhost:3001/" : "http://neprealestate.com/";
+export const FrontEndURL = window.location.host === "localhost:3001" ? "http://localhost:3000/" : "http://neprealestate.com/";
 
 export const capitalize = s => {
   if (typeof s !== "string") return "";
@@ -36,9 +36,15 @@ export const Endpoints = {
   addfeatures: "admin/addfeatures",
   editFeatures: "admin/editfeatures",
   getProperties: "property/getPropertiesWithFilters?id=1",
-  updatePropertyStatus: "admin/updatePropertyStatus", 
+  updatePropertyStatus: "admin/updatePropertyStatus",
   agentList: "admin/agentList",
-  getSubscribers: "admin/getSubscribers"
+  getSubscribers: "admin/getSubscribers",
+  getPropertyTypes: "users/getPropertyTypes?id=",
+  addAdminCost: "admin/addAdminCost",
+  getAllSettings: "admin/getAllSettings",
+  getSettingBySlug: "admin/get-settings-by-slug",
+  getPropertiesBySellerID: "property/getPropertiesBySellerID"
+
 };
 
 export const successToast = (message = "✅" + " Success!") => {

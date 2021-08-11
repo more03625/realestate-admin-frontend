@@ -204,10 +204,10 @@ const Content = () => {
                                         <th scope="col" className="border-0">
                                             City
                                         </th>
-                                         <th scope="col" className="border-0">
+                                        <th scope="col" className="border-0">
                                             State
                                         </th>
-                                       
+
                                         <th scope="col" className="border-0">
                                             Action
                                         </th>
@@ -233,7 +233,8 @@ const Content = () => {
                                                     className="btn btn-success"
                                                     onClick={() => replaceModalItem(index)}
                                                 >
-                                                    Edit
+                                                    <i className="material-icons">edit</i>
+
                                                 </button>
                                             </td>
                                         </tr>

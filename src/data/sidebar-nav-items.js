@@ -45,7 +45,7 @@ export default function () {
     },
     {
       title: "Features",
-      to: "/location/features",
+      to: "/features",
       htmlBefore: '<i class="material-icons">maps_home_work</i>',
       htmlAfter: ""
     },
@@ -60,13 +60,14 @@ export default function () {
       to: "/my-properties",
       htmlBefore: '<i class="material-icons">format_list_bulleted</i>',
       htmlAfter: ""
-    },
+    }
+    // ,
     // {
-    //   title: "Blog Dashboard",
-    //   to: "/blog-overview",
+    //   title: "Settings Page",
+    //   to: "/settings-list",
     //   htmlBefore: '<i class="material-icons">edit</i>',
     //   htmlAfter: ""
-    // },
+    // }
     // {
     //   title: "Blog Posts",
     //   htmlBefore: '<i class="material-icons">vertical_split</i>',

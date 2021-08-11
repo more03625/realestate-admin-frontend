@@ -39,11 +39,11 @@ const Content = () => {
     const [showStatusModal, setshowStatusModal] = useState(false);
     const handleStatusClose = () => setshowStatusModal(false);
     const location = useLocation();
-    
+
     const getProperties = async () => {
         var url = Host + Endpoints.getProperties;
-        if(location.pathname == '/my-properties'){
-            var url = Host + Endpoints.getProperties + '&myproperty='+getUserToken().data.id;
+        if (location.pathname == '/my-properties') {
+            var url = Host + Endpoints.getProperties + '&myproperty=' + getUserToken().data.id;
         }
         var result = await Axios.post(url);
         setProperties(result.data.data.properties);
@@ -54,14 +54,14 @@ const Content = () => {
 
     const updateStatus = (id, status) => {
         var data = {
-          id,
-          status: status === "active" ? "inactive" : "active"
+            id,
+            status: status === "active" ? "inactive" : "active"
         };
         var url = Host + Endpoints.updatePropertyStatus;
         Axios.post(url, data, {
-          headers: {
-            token: `${getUserToken().token}`,
-        }
+            headers: {
+                token: `${getUserToken().token}`,
+            }
         }).then(response => {
             if (response.data.error === true) {
                 errorToast(response.data.title);
@@ -77,7 +77,7 @@ const Content = () => {
         setRequiredItem(index); // set Index
         setshowStatusModal(true); // Open Modal
     };
-    var modalData = (requiredItem != undefined && requiredItem !== null ) ? properties[requiredItem] : '';
+    var modalData = (requiredItem != undefined && requiredItem !== null) ? properties[requiredItem] : '';
 
     const redirectToView = (propertySlug, propertyID) => {
         var url = `${FrontEndURL}property/${propertySlug}/${propertyID}`;
@@ -137,7 +137,7 @@ const Content = () => {
                                                 <tr key={value.id}>
                                                     <td>{index + 1}</td>
                                                     <td>{value.title}</td>
-                                                    
+
                                                     <td>{value.name_for_contact}</td>
                                                     <td>{value.number_for_contact}</td>
                                                     <td>
@@ -169,11 +169,11 @@ const Content = () => {
                                                             className="btn btn-success mr-1"
                                                             onClick={(e) => redirectToEdit(convertToSlug(value.title), value.id)}
                                                         >
-                                                            Edit
+                                                            <i className="material-icons">edit</i>
                                                         </Link>
 
                                                         <button type="button" className="btn btn-warning mr-1" onClick={() => changeStatusModal(index)}
-                                                        ><i className="material-icons">edit</i></button>
+                                                        ><i className="material-icons">build</i></button>
                                                     </td>
                                                 </tr>
                                             ))}
@@ -186,21 +186,23 @@ const Content = () => {
 
                 <Modal show={showStatusModal} onHide={handleStatusClose}>
                     <Modal.Header closeButton>
-                    <Modal.Title>Update Status</Modal.Title>
+                        <Modal.Title>Update Status</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Are you sure you want to update this Property?</Modal.Body>
+                    <Modal.Body>
+                        Are you sure you want to <b>{`${modalData && modalData.status === 'active' ? 'Deactivate' : 'Activate'}`}</b> this property?
+                    </Modal.Body>
                     <Modal.Footer>
-                    <Button variant="secondary" onClick={handleStatusClose}>
-                        Close
-                    </Button>
-                    <Button
-                        variant="danger"
-                        onClick={() => updateStatus(modalData.id, modalData.status)}
-                    >
-                        Update
-                    </Button>
+                        <Button variant="secondary" onClick={handleStatusClose}>
+                            Close
+                        </Button>
+                        <Button
+                            variant="danger"
+                            onClick={() => updateStatus(modalData.id, modalData.status)}
+                        >
+                            {`${modalData && modalData.status === 'active' ? 'Deactivate' : 'Activate'}`}
+                        </Button>
                     </Modal.Footer>
-                </Modal>                                             
+                </Modal>
 
             </Container>
         </>

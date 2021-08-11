@@ -22,9 +22,19 @@ import {
     getUserToken
 } from "../../helper/comman_helpers";
 import $ from "jquery";
+import { Link } from "react-router-dom";
 
 const Content = () => {
-
+    const requiredWidth = 48;
+    const requiredHeight = 48;
+    const errorStyle = {
+        color: "red",
+        fontSize: "14px",
+    };
+    const successStyle = {
+        color: "#28a745",
+        fontSize: "14px",
+    };
     $(document).ready(function () {
         setTimeout(function () {
             $("#subCategoryTable").DataTable();
@@ -35,53 +45,50 @@ const Content = () => {
 
     const [requiredItem, setRequiredItem] = useState();
     const [showEditModal, setEditModalShow] = useState(false);
-    // const [stateAddNewCity, setStateAddNewCity] = useState();
-    // const [stateAddNewCityError, setStateAddNewCityError] = useState();
-    // const [addNewCityName, setAddNewCityName] = useState();
-    // const [addNewCityError, setAddNewCityError] = useState(null);
+
     const [addShow, setAddShow] = useState(false);
-    // const [cityIdToEdit, setCityIdToEdit] = useState();
-    // const [cityNameToEdit, setCityNameToEdit] = useState();
-    // const [stateIdToEdit, setStateIdToEdit] = useState();
+
     const [showStatusModal, setshowStatusModal] = useState(false);
     const handleAddClose = () => setAddShow(false);
     const handleClose = () => setEditModalShow(false);
     const handleStatusClose = () => setshowStatusModal(false);
     // const [states, setStates] = useState([]);
     // const [statesError, setStatesError] = useState();
-    const [featureTypeToAdd, setFeatureTypeToAdd] = useState();
-    const [featureToAdd, setFeatureToAdd] = useState();
-    const [iconToAdd, setIconToAdd] = useState();
 
-    const [featureTypeToAddError, setFeatureTypeToAddError] = useState();
-    const [featureToAddError, setFeatureToAddError] = useState();
-    const [iconToAddError, setIconToAddError] = useState();
-    
-    const clearError = () => {
-        setFeatureTypeToAddError("");
-        setFeatureToAddError("");
-        setIconToAddError("");
+
+
+
+
+    const [runUseEffect, setRunUseEffect] = useState(false);
+
+    const [featuresData, setFeaturesData] = useState([]);
+    const [featuresDataError, setFeaturesDataError] = useState([]);
+    const handleOnChange = (e) => {
+        setFeaturesData({ ...featuresData, [e.target.name]: e.target.value });
     }
-    const [featureIdToEdit, setFeatureIdToEdit] = useState();
-    const [featureTypeToEdit, setFeatureTypeToEdit] = useState();
-    const [featureToEdit, setFeatureToEdit] = useState();
-    const [iconToEdit, setIconToEdit] = useState();
+    const clearErrors = () => {
+        setFeaturesDataError('')
+
+    }
+    const isValid = () => {
+        console.log(featuresData.icon);
+        console.log(featuresData);
+        if (featuresData.type === '' || featuresData.type === null || featuresData.type === undefined) {
+            setFeaturesDataError({ type: "Please select feature type!" });
+        } else if (featuresData.feature === '' || featuresData.feature === null || featuresData.feature === undefined) {
+            setFeaturesDataError({ feature: "Please enter feature name!" });
+        } else if (featuresData.icon === '' || featuresData.icon === null || featuresData.icon === undefined) {
+            setFeaturesDataError({ icon: `Image size should be ${requiredWidth}px X ${requiredHeight}px` });
+        } else {
+            return true;
+        }
+    }
 
     const addFeatureBtn = () => {
-        clearError();
 
-        if (featureTypeToAdd === '' || featureToAdd === '' || featureTypeToAdd === undefined || featureToAdd === undefined || iconToAdd === '' || iconToAdd === undefined) {
-            setFeatureTypeToAddError("Please select feature type!")
-            setFeatureToAddError("Please Enter Feature");
-            setIconToAddError("Please Enter Icon");
-        }
-        else {
+        if (isValid()) {
             var addFeatureURL = Host + Endpoints.addfeatures;
-            Axios.post(addFeatureURL, {
-                "feature": featureToAdd,
-                "type": featureTypeToAdd,
-                "icon": iconToAdd
-            }, {
+            Axios.post(addFeatureURL, featuresData, {
                 headers: {
                     token: `${getUserToken().token}`,
                 }
@@ -89,31 +96,75 @@ const Content = () => {
                 if (response.data.error === true) {
                     errorToast(response.data.title);
                 } else {
+                    setRunUseEffect(!runUseEffect);
                     successToast(response.data.title);
                 }
             })
             setAddShow(false);
         }
+
     }
 
-    const updateCity = () => {
-        clearError();
+    const [isImageSelected, setIsImageSelected] = useState(false);
+
+    const uploadImage = (e) => {
+        const image = e.target.files[0];
+
+        createReader(image, function (width, height) {
+
+            if (width === requiredWidth && height === requiredHeight) {
+                setIsImageSelected({
+                    ...isImageSelected,
+                    image: `${image.name} has been selected`,
+                });
+                const base64Image = convertToBase64(image);
+                console.log()
+                base64Image.then((response) => {
+                    setFeaturesData({ ...featuresData, icon: response });
+                    console.log(featuresData);
+                })
+            } else {
+                setFeaturesDataError({ icon: `Image size should be ${requiredWidth}px X ${requiredHeight}px. You uploaded ${width}px X ${height}px` });
+            }
+        });
+    };
+    function createReader(file, whenReady) {
+        var reader = new FileReader;
+        reader.onload = function (evt) {
+            var image = new Image();
+            image.onload = function (evt) {
+                var width = this.width;
+                var height = this.height;
+                if (whenReady) whenReady(width, height);
+            };
+            image.src = evt.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+    const convertToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+
+            fileReader.onload = () => {
+                resolve(fileReader.result);
+            };
+
+            fileReader.onerror = (error) => {
+                reject(error);
+            };
+        });
+    };
+
+    const updateFeature = () => {
+        console.log(isImageSelected)
+        if (isImageSelected === false) {
+            Object.assign(featuresData, { icon: 0 });
+        }
 
         var editFeaturesURL = Host + Endpoints.editFeatures;
-        var featuresData = {
-            "id": featureIdToEdit,
-            "type": featureTypeToEdit,
-            "feature": featureToEdit,
-            "icon": iconToEdit
-        }
 
-        if (featureTypeToEdit === '' || featureToEdit === '' || iconToEdit === '') {
-
-            setFeatureTypeToAddError("Please select feature type!")
-            setFeatureToAddError("Please Enter Feature");
-            setIconToAddError("Please Enter Icon");
-        }
-        else {
+        if (isValid()) {
             Axios.post(editFeaturesURL, featuresData, {
                 headers: {
                     token: `${getUserToken().token}`,
@@ -122,11 +173,14 @@ const Content = () => {
                 if (response.data.error === true) {
                     errorToast(response.data.title);
                 } else {
+                    setRunUseEffect(!runUseEffect);
+
                     successToast(response.data.title);
                 }
                 setEditModalShow(false);
             })
         }
+
     }
     const getFeatures = () => {
         var url = Host + Endpoints.getFeatures;
@@ -142,37 +196,28 @@ const Content = () => {
             }
         });
     };
-    // const getStates = () => {
-    //     var url = Host + Endpoints.getStates;
-    //     Axios.get(url).then((response) => {
-    //         if (response.data.error === true) {
-    //             setStatesError(response.data.title);
-    //         } else {
-    //             setStates(response.data.data);
-    //         }
-    //     })
-    // }
+
     useEffect(() => {
         getFeatures();
         // getStates();
-    }, []);
+    }, [runUseEffect]);
 
     const updateStatus = (id, status) => {
         var data = {
-          id,
-          status: status == true ? false : true
+            id,
+            status: status == true ? false : true
         };
         var url = Host + Endpoints.editFeatures;
         Axios.post(url, data, {
-          headers: {
-            token: `${getUserToken().token}`,
-        }
+            headers: {
+                token: `${getUserToken().token}`,
+            }
         }).then(response => {
             if (response.data.error === true) {
                 errorToast(response.data.title);
             } else {
                 successToast(response.data.title);
-                getFeatures(); 
+                getFeatures();
                 setshowStatusModal(false);
             }
         });
@@ -184,22 +229,21 @@ const Content = () => {
     };
 
     const replaceModalItem = (index) => {
-        clearError();
-
-        setFeatureIdToEdit(features[index].id);
-        setFeatureTypeToEdit(features[index].type);
-        setFeatureToEdit(features[index].feature);
-        setIconToEdit(features[index].icon);
-
+        clearErrors();
+        setFeaturesData({ id: features[index].id, type: features[index].type, feature: features[index].feature, icon: features[index].icon });
         setRequiredItem(index);
         setEditModalShow(true);
     }
 
     var modalData = (requiredItem !== null || requiredItem !== undefined) ? features[requiredItem] : '';
-
+    console.log(modalData);
     const openAddFeaturesModal = () => {
-        clearError();
-        setAddShow(true)
+        setIsImageSelected('');
+        clearErrors();
+        setAddShow(true);
+    }
+    const openImage = (imageName) => {
+        window.open(Host + imageName + ".jpg");
     }
     return (
         <Container fluid className="main-content-container px-4">
@@ -239,13 +283,15 @@ const Content = () => {
                                         <th scope="col" className="border-0">
                                             Type
                                         </th>
+                                        {/*
                                         <th scope="col" className="border-0">
                                             Icon
                                         </th>
+                                        */}
                                         <th scope="col" className="border-0">
                                             Status
                                         </th>
-                                       
+
                                         <th scope="col" className="border-0">
                                             Action
                                         </th>
@@ -257,7 +303,7 @@ const Content = () => {
                                             <td>{index + 1}</td>
                                             <td>{value.feature}</td>
                                             <td>{value.type}</td>
-                                            <td>{value.icon}</td>
+                                            {/*<td>{value.icon}</td>*/}
                                             <td>
                                                 {value.status === true ? (
                                                     <span style={{ color: "green" }}>
@@ -269,13 +315,13 @@ const Content = () => {
                                                     </span>
                                                 )}
                                             </td>
-                                           
+
                                             <td>
                                                 <button type="button" className="btn btn-success mr-1" onClick={() => replaceModalItem(index)}>
-                                                    Edit
+                                                    <i className="material-icons">edit</i>
                                                 </button>
                                                 <button type="button" className="btn btn-warning mr-1" onClick={() => changeStatusModal(index)}
-                                                ><i className="material-icons">edit</i></button>
+                                                ><i className="material-icons">build</i></button>
                                             </td>
                                         </tr>
                                     ))}
@@ -288,19 +334,22 @@ const Content = () => {
 
             <Modal show={showStatusModal} onHide={handleStatusClose}>
                 <Modal.Header closeButton>
-                <Modal.Title>Update Status</Modal.Title>
+                    <Modal.Title>Update Status</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Are you sure you want to update this Feature?</Modal.Body>
+                <Modal.Body>
+
+                    Are you sure you want to <b>{`${modalData && modalData.status === true ? 'Deactivate' : 'Activate'}`}</b> <b>{`${modalData && modalData.feature}`}</b> Feature?</Modal.Body>
                 <Modal.Footer>
-                <Button variant="secondary" onClick={handleStatusClose}>
-                    Close
-                </Button>
-                <Button
-                    variant="danger"
-                    onClick={() => updateStatus(modalData.id, modalData.status)}
-                >
-                    Update
-                </Button>
+
+                    <Button variant="secondary" onClick={handleStatusClose}>
+                        Close
+                    </Button>
+                    <Button
+                        variant="danger"
+                        onClick={() => updateStatus(modalData.id, modalData.status)}
+                    >
+                        <b>{`${modalData && modalData.status === true ? 'Deactivate' : 'Activate'}`}</b>
+                    </Button>
                 </Modal.Footer>
             </Modal>
 
@@ -311,7 +360,7 @@ const Content = () => {
                 <Modal.Body>
                     <FormGroup>
                         <label htmlFor="feInputState">Feature type</label>
-                        <FormSelect id="feInputState" onChange={(e) => setFeatureTypeToEdit(e.target.value)} defaultValue={modalData && modalData.type != undefined ? modalData.type : ''}>
+                        <FormSelect id="feInputState" name="type" onChange={(e) => handleOnChange(e)} defaultValue={modalData && modalData.type != undefined ? modalData.type : ''}>
                             <option>Choose Feature type</option>
                             <option value="Outdoor Features">Outdoor Features</option>
                             <option value="Indoor Features">Indoor Features</option>
@@ -322,26 +371,47 @@ const Content = () => {
                     ))}
                     */}
                         </FormSelect>
-                        <p style={errorStyle}>{featureTypeToAddError}</p>
+                        <p style={errorStyle}>{featuresDataError.type}</p>
                     </FormGroup>
 
                     <FormGroup>
                         <label htmlFor="feInputAddress">Feature Name</label>
-                        <FormInput id="feInputAddress" placeholder="Enter Feature Name" onChange={(e) => setFeatureToEdit(e.target.value)} defaultValue={modalData && modalData.feature != undefined ? modalData.feature : ''} />
-                        <p style={errorStyle}>{featureToAddError}</p>
+                        <FormInput id="feInputAddress" placeholder="Enter Feature Name" name="feature" onChange={(e) => handleOnChange(e)} defaultValue={modalData && modalData.feature != undefined ? modalData.feature : ''} />
+                        <p style={errorStyle}>{featuresDataError.feature}</p>
                     </FormGroup>
 
                     <FormGroup>
-                        <label htmlFor="feInputIcon">Icon Name</label>
-                        <FormInput id="feInputIcon" placeholder="Enter Icon Name" onChange={(e) => setIconToEdit(e.target.value)} defaultValue={modalData && modalData.icon != undefined ? modalData.icon : ''} />
-                        <p style={errorStyle}>{iconToAddError}</p>
+                        <label htmlFor="iconInputAddress">Icon Name</label>
+                        <div className="custom-file mb-3">
+                            <input type="file" className="custom-file-input" id="customFile2" name="icon" onChange={(e) => { uploadImage(e); }} />
+                            <label className="custom-file-label" htmlFor="customFile2">
+                                Choose file...
+                            </label>
+                            <p style={errorStyle}>{featuresDataError.icon}</p>
+                            <p style={successStyle}>{isImageSelected.image}</p>
+                            {
+                                isImageSelected === false ?
+                                    <p style={successStyle}>
+
+                                        <Link style={successStyle} to={"#"} onClick={() => openImage(modalData && modalData.icon ? modalData.icon : '')}>This image selected as a thumbnail!</Link>
+                                    </p>
+                                    : ''
+                            }
+                        </div>
                     </FormGroup>
+
+                    <FormGroup>
+                        <div className="custom-file mb-3">
+                            <Link to={"#"} onClick={() => window.open("https://www.iloveimg.com/resize-image")}>Resize image Online</Link>
+                        </div>
+                    </FormGroup>
+
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={updateCity}>
+                    <Button variant="primary" onClick={updateFeature}>
                         Update
                     </Button>
                 </Modal.Footer>
@@ -355,7 +425,7 @@ const Content = () => {
 
                     <FormGroup>
                         <label htmlFor="feInputState">Feature type</label>
-                        <FormSelect id="feInputState" onChange={(e) => setFeatureTypeToAdd(e.target.value)}>
+                        <FormSelect id="feInputState" name="type" onChange={(e) => handleOnChange(e)}>
                             <option>Choose Feature type</option>
                             <option value="Outdoor Features">Outdoor Features</option>
                             <option value="Indoor Features">Indoor Features</option>
@@ -366,21 +436,34 @@ const Content = () => {
                             ))}
                             */}
                         </FormSelect>
-                        <p style={errorStyle}>{featureTypeToAddError}</p>
+                        <p style={errorStyle}>{featuresDataError.type}</p>
                     </FormGroup>
 
                     <FormGroup>
                         <label htmlFor="feInputAddress">Feature Name</label>
-                        <FormInput id="feInputAddress" placeholder="Enter Feature Name" onChange={(e) => setFeatureToAdd(e.target.value)} />
-                        <p style={errorStyle}>{featureToAddError}</p>
+                        <FormInput id="feInputAddress" placeholder="Enter Feature Name" name="feature" onChange={(e) => handleOnChange(e)} />
+                        <p style={errorStyle}>{featuresDataError.feature}</p>
+
                     </FormGroup>
 
                     <FormGroup>
                         <label htmlFor="iconInputAddress">Icon Name</label>
-                        <FormInput id="iconInputAddress" placeholder="Enter Icon Name" onChange={(e) => setIconToAdd(e.target.value)} />
-                        <p style={errorStyle}>{iconToAddError}</p>
+                        <div className="custom-file mb-3">
+                            <input type="file" className="custom-file-input" id="customFile2" name="icon" onChange={(e) => { uploadImage(e); }} />
+                            <label className="custom-file-label" htmlFor="customFile2">
+                                Choose file...
+                            </label>
+                            <p style={errorStyle}>{featuresDataError.icon}</p>
+                            <p style={successStyle}>{isImageSelected.image}</p>
+                        </div>
                     </FormGroup>
-                    
+
+
+                    <FormGroup>
+                        <div className="custom-file mb-3">
+                            <Link to={"#"} onClick={() => window.open("https://www.iloveimg.com/resize-image")}>Resize image Online</Link>
+                        </div>
+                    </FormGroup>
 
                 </Modal.Body>
                 <Modal.Footer>

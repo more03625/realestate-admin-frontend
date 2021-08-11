@@ -169,8 +169,8 @@ const Features = () => {
             <Row noGutters className="page-header py-4">
                 <PageTitle
                     sm="4"
-                    title="Manage Features"
-                    subtitle="Manage Features"
+                    title="aManage Features"
+                    subtitle="sManage Features"
                     className="text-sm-left"
                 />
             </Row>
