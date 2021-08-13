@@ -10,7 +10,9 @@ import {
   Card,
   CardHeader,
   CardBody,
-  FormCheckbox
+  FormCheckbox,
+  FormGroup,
+  FormInput
 } from "shards-react";
 import Axios from "axios";
 import PageTitle from "../../components/common/PageTitle";
@@ -37,6 +39,7 @@ const Content = () => {
   });
 
   const [show, setShow] = useState(false);
+  const [showSeller, setShowSeller] = useState(false);
   const [requiredItem, setRequiredItem] = useState();
   const [users, setUsers] = useState([]);
   const [usersError, setUsersError] = useState();
@@ -83,10 +86,17 @@ const Content = () => {
   const handleClose = () => {
     setShow(false);
   };
-
   const replaceModalItem = index => {
     setRequiredItem(index); // set Index
     setShow(true); // Open Modal
+  };
+
+  const handleCloseSeller = () => {
+    setShowSeller(false);
+  };
+  const replaceSellerModalItem = index => {
+    setRequiredItem(index); // set Index
+    setShowSeller(true); // Open Modal
   };
 
   var modalData =
@@ -126,7 +136,7 @@ const Content = () => {
                       Sr.
                     </th>
                     <th scope="col" className="border-0">
-                      Seller Name
+                      Name
                     </th>
                     <th scope="col" className="border-0">
                       Email
@@ -135,7 +145,7 @@ const Content = () => {
                       Phone
                     </th>
                     <th scope="col" className="border-0">
-                      Type
+                      User Type
                     </th>
                     <th scope="col" className="border-0">
                       Status
@@ -152,7 +162,7 @@ const Content = () => {
                       <td>{value.name}</td>
                       <td>{value.email}</td>
                       <td>{value.mobile}</td>
-                      <td>{capitalize(value.type)}</td>
+                      <td>{capitalize(value.user_type)}</td>
                       <td>
                         {value.status === "active" ? (
                           <span style={{ color: "green" }}>
@@ -179,15 +189,13 @@ const Content = () => {
                         >
                           <i className="material-icons">home</i>
                         </Link>
-                        {/* <Link
-                          to="#"
-                          target="_blank"
+                        <button
                           type="button"
                           className="btn btn-info mr-1"
+                          onClick={() => replaceSellerModalItem(index)}
                         >
                           <i className="material-icons">visibility</i>
-                        </Link> */}
-
+                        </button>
                       </td>
                     </tr>
                   ))}
@@ -205,11 +213,7 @@ const Content = () => {
         </Modal.Header>
         <Modal.Body>
           Are you sure you want to {`${modalData && modalData.status === 'active' ? 'Deactivate' : 'Activate'}`} this user ?
-
-
         </Modal.Body>
-
-
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
@@ -220,6 +224,44 @@ const Content = () => {
           >
             {`${modalData && modalData.status === 'active' ? 'Deactivate' : 'Activate'}`}
           </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal size="lg" show={showSeller} onHide={handleCloseSeller}>
+        <Modal.Header closeButton>
+            <Modal.Title>Seller Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <FormGroup>
+                <label>Name</label>
+                <FormInput readOnly= {true}  defaultValue={modalData && modalData.name !== undefined ? capitalize(modalData.name) : ''} />
+            </FormGroup>
+
+            <FormGroup>
+                <label> Email </label>
+                <FormInput readOnly= {true}  defaultValue={modalData && modalData.email !== undefined ? modalData.email : ''} />
+            </FormGroup>
+
+            <FormGroup>
+                <label>Mobile</label>
+                <FormInput readOnly= {true}  defaultValue={modalData && modalData.mobile !== undefined ? modalData.mobile : ''} />
+            </FormGroup>
+
+            <FormGroup>
+                <label>User Type</label>
+                <FormInput readOnly= {true}  defaultValue={modalData && modalData.user_type !== undefined ? capitalize(modalData.user_type) : ''} />
+            </FormGroup>
+
+            <FormGroup>
+                <label>Status</label>
+                <FormInput readOnly= {true}  defaultValue={modalData && modalData.status !== undefined ? capitalize(modalData.status) : ''} />
+            </FormGroup>
+        </Modal.Body>
+
+        <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseSeller}>
+                Close
+            </Button>
         </Modal.Footer>
       </Modal>
     </Container>

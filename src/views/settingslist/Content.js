@@ -20,8 +20,8 @@ const Content = ({ allSettings }) => {
             <Row noGutters className="page-header py-4">
                 <PageTitle
                     sm="4"
-                    title="Manage Sub Categories"
-                    subtitle="Sub Categories CRUD"
+                    title="Manage Settings"
+                    subtitle="Settings CRUD"
                     className="text-sm-left"
                 />
             </Row>

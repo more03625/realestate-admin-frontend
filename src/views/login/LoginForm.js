@@ -105,7 +105,7 @@ const LoginForm = () => {
                             <Form>
                                 <Row form>
                                     {/* First Name */}
-                                    <Col md="12" className="form-group">
+                                    <Col md="12" style={{marginBottom:0 }} className="form-group">
                                         <label htmlFor="feEmail">Email</label>
                                         <FormInput
                                             type="email"
