@@ -4,10 +4,8 @@ import {
     Row,
     Col,
     Card,
-    CardHeader,
     CardBody,
-    FormCheckbox,
-    FormGroup, FormInput, FormSelect
+
 } from "shards-react";
 import Axios from "axios";
 import { Modal, Button } from "react-bootstrap";
@@ -26,24 +24,6 @@ import $ from "jquery";
 import { useParams } from "react-router-dom";
 
 const Content = () => {
-    const handleStatusClose = () => setshowStatusModal(false);
-    const [requiredItem, setRequiredItem] = useState();
-    const [costData, setCostData] = useState([]);
-    const [costDataError, setCostDataError] = useState([]);
-    const [chargesModal, setChargesModal] = useState(false);
-    const [showStatusModal, setshowStatusModal] = useState(false);
-    const [runUseEffect, setRunUseEffect] = useState(false);
-    const { sellerID } = useParams()
-    const [sellerProperties, setSellerProperties] = useState([]);
-    const handleAddChargesModalClose = () => setChargesModal(false);
-
-    const isValidCharges = () => {
-        if (costData.admin_cost === '' || costData.admin_cost === null || costData.admin_cost === undefined) {
-            setCostDataError({ 'admin_cost': "Please enter valid amount" })
-        } else {
-            return true;
-        }
-    }
     $(document).ready(function () {
         setTimeout(function () {
             $("#propertiesTable").DataTable();
@@ -51,6 +31,12 @@ const Content = () => {
 
     });
 
+    const handleStatusClose = () => setshowStatusModal(false);
+    const [requiredItem, setRequiredItem] = useState();
+    const [showStatusModal, setshowStatusModal] = useState(false);
+    const [runUseEffect, setRunUseEffect] = useState(false);
+    const { sellerID } = useParams()
+    const [sellerProperties, setSellerProperties] = useState([]);
 
     const getSellerProperties = async () => {
         var url = Host + Endpoints.getPropertiesBySellerID
@@ -72,34 +58,7 @@ const Content = () => {
         setRequiredItem(index); // set Index
         setshowStatusModal(true); // Open Modal
     };
-    const addCharges = async () => {
-        Object.assign(costData, { id: modalData.id });
-        if (isValidCharges()) {
-            var url = Host + Endpoints.addAdminCost
-            const result = await Axios.post(url, costData, {
-                headers: {
-                    token: `${getUserToken().token}`,
-                }
-            });
-            if (result.data.error === true) {
-                errorToast(result.data.title)
-            } else {
 
-                successToast(result.data.title);
-                setChargesModal(false);
-                setRunUseEffect(!runUseEffect);
-
-            }
-
-        } else {
-            console.log('There are some errors@')
-        }
-    }
-
-    const addChargesModal = index => {
-        setRequiredItem(index); // set Index
-        setChargesModal(true); // Open Modal
-    }
     const updateStatus = (id, status) => {
         var data = {
             id,
@@ -122,9 +81,7 @@ const Content = () => {
         });
     };
     var modalData = (requiredItem != undefined && requiredItem !== null) ? sellerProperties[requiredItem] : '';
-    const handleOnChange = (e) => {
-        setCostData({ ...costData, [e.target.name]: e.target.value });
-    }
+
     useEffect(() => {
         getSellerProperties();
     }, [runUseEffect]);
@@ -192,14 +149,7 @@ const Content = () => {
                                             </td>
 
                                             <td>
-                                                <Link
-                                                    to="#"
-                                                    type="button"
-                                                    className="btn btn-warning mr-1"
-                                                    onClick={() => addChargesModal(index)}
-                                                >
-                                                    <i className="material-icons">attach_money</i>
-                                                </Link>
+
                                                 <Link
                                                     to="#"
                                                     type="button"
@@ -251,30 +201,7 @@ const Content = () => {
             </Modal>
 
 
-            <Modal show={chargesModal} onHide={handleAddChargesModalClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Add Charges</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <FormGroup>
-                        <label htmlFor="feInputAddress">Enter Amount</label>
-                        <FormInput id="feInputAddress" placeholder="Please enter your charges" name="admin_cost" onChange={(e) => handleOnChange(e)}
-                            defaultValue={modalData && modalData.admin_cost != undefined ? modalData.admin_cost : ''} />
-                        <p style={errorStyle}>{costDataError.admin_cost}</p>
-                    </FormGroup>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleAddChargesModalClose}>
-                        Close
-                    </Button>
-                    <Button
-                        variant="danger"
-                        onClick={() => addCharges()}
-                    >
-                        Add Charges
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+
         </Container>
     );
 }

@@ -184,6 +184,7 @@ const Content = () => {
                                     <tbody>
                                         {properties &&
                                             properties.map((value, index) => (
+
                                                 <tr key={value.id}>
                                                     <td>{index + 1}</td>
                                                     <td>{value.title}</td>
@@ -206,16 +207,6 @@ const Content = () => {
                                                         <Link
                                                             to="#"
                                                             type="button"
-                                                            className="btn btn-warning mr-1"
-                                                            onClick={() => addChargesModal(index)}
-                                                        >
-                                                            <i className="material-icons">attach_money</i>
-                                                        </Link>
-
-
-                                                        <Link
-                                                            to="#"
-                                                            type="button"
                                                             className="btn btn-info mr-1"
                                                             onClick={(e) => redirectToView(convertToSlug(value.title), value.id)}
                                                         >
@@ -233,6 +224,18 @@ const Content = () => {
 
                                                         <button type="button" className="btn btn-warning mr-1" onClick={() => changeStatusModal(index)}
                                                         ><i className="material-icons">build</i></button>
+                                                        {
+                                                            getUserToken().data.id !== value.user_id ?
+
+                                                                <Link
+                                                                    to="#"
+                                                                    type="button"
+                                                                    className="btn btn-warning mr-1"
+                                                                    onClick={() => addChargesModal(index)}
+                                                                >
+                                                                    <i className="material-icons">attach_money</i>
+                                                                </Link> : ''
+                                                        }
                                                     </td>
                                                 </tr>
                                             ))}

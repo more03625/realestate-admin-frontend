@@ -61,13 +61,13 @@ export default function () {
       htmlBefore: '<i class="material-icons">format_list_bulleted</i>',
       htmlAfter: ""
     }
-    // ,
-    // {
-    //   title: "Settings Page",
-    //   to: "/settings-list",
-    //   htmlBefore: '<i class="material-icons">edit</i>',
-    //   htmlAfter: ""
-    // }
+    ,
+    {
+      title: "Settings Page",
+      to: "/settings-list",
+      htmlBefore: '<i class="material-icons">edit</i>',
+      htmlAfter: ""
+    }
     // {
     //   title: "Blog Posts",
     //   htmlBefore: '<i class="material-icons">vertical_split</i>',
