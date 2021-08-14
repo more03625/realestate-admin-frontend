@@ -415,7 +415,7 @@ const Content = () => {
                 <Modal.Body>
                     <FormGroup>
                         <label htmlFor="feInputState">Category</label>
-                        <FormSelect id="feInputState" onChange={(e) => setCategoryID(e.target.value)} defaultValue={modalData && modalData.category_id ? modalData.category_id : ''}>
+                        <FormSelect id="feInputState" onChange={(e) => setCategoryID(e.target.value)} defaultValue={modalData && modalData.category_id ? modalData.category_id : ''} onChange={(e) => handleCategoryChange(e)}>
                             <option>Choose Status</option>
                             {categories.map((value, index) => (
                                 <option key={value.id} value={value.id}>{value.name}</option>

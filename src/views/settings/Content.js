@@ -8,14 +8,19 @@ import "../../assets/quill.css";
 
 const Content = ({ setting }) => {
     const [settingsData, setSettingsData] = useState([]);
-
+    const [state, setState] = useState({ content: null });
     var settingData = setting[0];
     const handleOnChange = (e) => {
         setSettingsData({ ...settingData, [e.target.name]: e.target.value });
     }
-    console.log(settingsData)
-
-
+    const contentChange = (content) => {
+        setState({ content });
+        console.log(state)
+    }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(settingsData)
+    }
     return (
         <Container fluid className="main-content-container px-4">
             {/* Page Header */}
@@ -32,8 +37,10 @@ const Content = ({ setting }) => {
                 <CardBody>
                     <Form className="add-new-post">
                         <FormInput size="lg" className="mb-3" placeholder="Please enter a title" name="Pagetitle" defaultValue={settingData && settingData.title} onChange={(e) => handleOnChange(e)} />
-                        <ReactQuill className="add-new-post__editor mb-1" value={settingData && settingData.content} />
-                        <button type="button" className="btn btn-primary mr-1" > Update <i className="material-icons">add</i></button>
+
+                        <ReactQuill className="add-new-post__editor mb-1" value={state.content} defaultValue={settingData && settingData.content} onChange={contentChange} />
+
+                        <button type="button" className="btn btn-primary mr-1" onClick={handleSubmit}> Update <i className="material-icons">add</i></button>
                     </Form>
                 </CardBody>
             </Card>

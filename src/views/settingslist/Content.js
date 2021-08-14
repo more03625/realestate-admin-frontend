@@ -69,10 +69,10 @@ const Content = ({ allSettings }) => {
                                             </td>
 
                                             <td>
-                                                <button type="button" className="btn btn-warning mr-1" onClick={() => window.location.href = `settings/${value.slug}`}>
+                                                <button type="button" className="btn btn-warning mr-1">
                                                     <i className="material-icons">build</i>
                                                 </button>
-                                                <button type="button" className="btn btn-success" >
+                                                <button type="button" className="btn btn-success" onClick={() => window.location.href = `settings/${value.slug}`}>
                                                     <i className="material-icons">edit</i>
                                                 </button>
                                             </td>
