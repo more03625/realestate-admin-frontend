@@ -7,7 +7,7 @@ import {
     CardHeader,
     CardBody,
     FormCheckbox,
-    FormGroup, FormInput, FormSelect
+    FormGroup, FormInput, FormSelect, FormTextarea
 } from "shards-react";
 import Axios from "axios";
 import { Modal, Button } from "react-bootstrap";
@@ -43,6 +43,7 @@ const Content = () => {
     });
     const [addNewCategory, setAddNewCategory] = useState();
     const [addSubCategoryName, setAddSubCategoryName] = useState();
+    const [addSubCategoryDescription, setAddSubCategoryDescription] = useState();
     const [addNewCategoryImage, setAddNewCategoryImage] = useState();
     const [addNewPropertyType, setAddNewPropertyType] = useState();
     const [newPropertyType, setNewPropertyType] = useState();
@@ -54,6 +55,7 @@ const Content = () => {
     const [addNewCategoryImageError, setAddNewCategoryImageError] = useState(null);
     const [addNewPropertyTypeError, setAddNewPropertyTypeError] = useState(null);
     const [newPropertyTypeError, setNewPropertyTypeError] = useState(null);
+    const [addSubCategoryDescriptionError, setAddSubCategoryDescriptionError] = useState();
 
 
     const [subCategoriesError, setSubCategoriesError] = useState();
@@ -67,6 +69,7 @@ const Content = () => {
     const [categoryID, setCategoryID] = useState();
     const [subCategoryID, setSubCategoryID] = useState();
     const [newCategoryName, setNewCategoryName] = useState();
+    const [newCategoryDescription, setNewCategoryDescription] = useState();
 
     const handleAddClose = () => setAddShow(false);
     const handleClose = () => setEditModalShow(false);
@@ -84,7 +87,7 @@ const Content = () => {
     const addSubCategoryBtn = () => {
         setAddNewCategoryError(null);
         setAddSubCategoryNameError(null);
-        if (addNewCategory === undefined || addSubCategoryName === undefined || addNewCategoryImage === undefined || addNewPropertyType === undefined) {
+        if (addNewCategory === undefined || addSubCategoryName === undefined || addNewCategoryImage === undefined || addNewPropertyType === undefined || addSubCategoryDescription === undefined) {
             setAddNewCategoryError("Please enter valid category!")
             setAddSubCategoryNameError("Please enter a valid sub category name!");
             setAddNewCategoryImageError('Please choose image to display');
@@ -96,7 +99,8 @@ const Content = () => {
                 "category_id": addNewCategory,
                 "name": addSubCategoryName,
                 "image": addNewCategoryImage,
-                "type": addNewPropertyType
+                "type": addNewPropertyType,
+                "description": addSubCategoryDescription
             }, {
                 headers: {
                     token: `${getUserToken().token}`,
@@ -128,7 +132,8 @@ const Content = () => {
             "category_id": categoryID,
             "name": newCategoryName,
             "image": addNewCategoryImage,
-            "type": newPropertyType
+            "type": newPropertyType,
+            "description": newCategoryDescription
         }
 
         if (newCategoryName === '' || categoryID === '') {
@@ -441,6 +446,13 @@ const Content = () => {
                         <input type="hidden" name="categoryID" value={modalData && modalData.id !== undefined ? modalData.id : ''} />
                         <p style={errorStyle}>{addSubCategoryNameError}</p>
                     </FormGroup>
+
+                    <FormGroup>
+                        <label htmlFor="feDescription">Description</label>
+                        <FormTextarea name="description" id="feDescription" rows="5" onChange={(e) => setNewCategoryDescription(e.target.value)} defaultValue={modalData && modalData.description !== undefined ? modalData.description : ''} />
+                        <p style={errorStyle}>{addSubCategoryDescriptionError}</p>
+                    </FormGroup>
+
                     <div className="custom-file mb-3">
                         <input type="file" className="custom-file-input" id="customFile2" onChange={(e) => { uploadImage(e); }} />
                         <label className="custom-file-label" htmlFor="customFile2">
@@ -516,15 +528,19 @@ const Content = () => {
                         <FormInput id="feInputAddress" placeholder="Sub Category" onChange={(e) => setAddSubCategoryName(e.target.value)} />
                         <p style={errorStyle}>{addSubCategoryNameError}</p>
                     </FormGroup>
+                    <FormGroup>
+                        <label htmlFor="feDescription">Description</label>
+                        <FormTextarea name="description" id="feDescription" rows="5" onChange={(e) => setAddSubCategoryDescription(e.target.value)} />
+                        <p style={errorStyle}>{addSubCategoryDescriptionError}</p>
+                    </FormGroup>
+
                     <div className="custom-file mb-3">
                         <input type="file" className="custom-file-input" id="customFile2" onChange={(e) => { uploadImage(e); }} />
                         <label className="custom-file-label" htmlFor="customFile2">
                             Choose file...
                         </label>
-
                         <p style={errorStyle}>{addNewCategoryImageError}</p>
                         <p style={successStyle}>{isImageSelected.image}</p>
-
                     </div>
 
 

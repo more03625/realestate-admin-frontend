@@ -83,6 +83,7 @@ h6 {
   font-weight: 400;
   color: #3d5170;
 }
+
 .h1,
 h1 {
   font-size: 3.052rem;
@@ -5732,4 +5733,8 @@ html .ql-toolbar .ql-picker .ql-picker-options {
   .main-sidebar .navbar-brand {
     font-size: 90%;
   }
+}
+/* RAHUL MORE */
+.ck-editor__editable_inline {
+  min-height: 500px;
 }

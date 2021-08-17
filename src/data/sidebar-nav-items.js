@@ -67,12 +67,12 @@ export default function () {
       to: "/settings-list",
       htmlBefore: '<i class="material-icons">edit</i>',
       htmlAfter: ""
+    },
+    {
+      title: "News",
+      htmlBefore: '<i class="material-icons">vertical_split</i>',
+      to: "/news"
     }
-    // {
-    //   title: "Blog Posts",
-    //   htmlBefore: '<i class="material-icons">vertical_split</i>',
-    //   to: "/blog-posts"
-    // },
     // {
     //   title: "Add New Post",
     //   htmlBefore: '<i class="material-icons">note_add</i>',

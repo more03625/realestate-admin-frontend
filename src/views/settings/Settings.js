@@ -29,7 +29,7 @@ const Settings = () => {
         });
         console.log(result);
         if (result.data.error === false) {
-            setSetting(result.data.data.settings);
+            setSetting(result.data.data.settings[0]);
         }
     }
     useEffect(() => {
@@ -48,7 +48,7 @@ const Settings = () => {
                     tag="main"
                 >
                     {<MainNavbar />}
-                    <Content setting={setting} />
+                    <Content setting={setting} setSetting={setSetting} />
                     {<MainFooter />}
                 </Col>
             </Row>

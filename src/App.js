@@ -17,6 +17,8 @@ import Subcategory from "./views/Subcategory/Subcategory";
 import Features from "./views/features/Feature";
 import Settings from "./views/settings/Settings";
 import SettingsList from "./views/settingslist/SettingsList";
+import News from "./views/news/News";
+import Editnews from "./views/news/Editnews";
 
 import Properties from "./views/properties/Properties";
 import MyProperties from "./views/MyProperty/Properties";
@@ -28,7 +30,6 @@ import LoggedInProtected from "./views/protected/LoggedInProtected";
 export default () => (
   <Router basename="/admin">
     <Switch>
-
       <Route exact path="/">
         <LoggedInProtected component={Dashboard} />
       </Route>
@@ -79,6 +80,15 @@ export default () => (
       </Route>
       <Route path="/settings/:slug">
         <LoggedInProtected component={Settings} />
+      </Route>
+      <Route path="/news/add-news">
+        <LoggedInProtected component={Editnews} />
+      </Route>
+      <Route exact path="/news">
+        <LoggedInProtected component={News} />
+      </Route>
+      <Route path="/news/edit/:slug/:newsID">
+        <LoggedInProtected component={Editnews} />
       </Route>
       <Route path="/logout">
         <LoggedInProtected component={Logout} />

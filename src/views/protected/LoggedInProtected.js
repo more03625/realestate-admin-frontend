@@ -18,7 +18,7 @@ const LoggedInProtected = (props) => {
     }
     useEffect(() => {
         isLoggedIn();
-    }, []);
+    }, []); // onChange
 
     return (
         <>

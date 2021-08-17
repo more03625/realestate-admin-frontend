@@ -14,12 +14,10 @@ import { Modal, Button } from "react-bootstrap";
 import { ToastContainer } from "react-toastify";
 import PageTitle from "../../components/common/PageTitle";
 import {
-    capitalize,
     Host,
     Endpoints,
     successToast,
-    errorToast, errorStyle,
-    getUserToken
+    errorToast, getUserToken
 } from "../../helper/comman_helpers";
 import $ from "jquery";
 import { Link } from "react-router-dom";
