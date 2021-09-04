@@ -41,9 +41,13 @@ const Content = ({ allSettings }) => {
                                         <th scope="col" className="border-0">
                                             Name
                                         </th>
-                                        <th scope="col" className="border-0">
+                                        {
+                                            /*
+                                             <th scope="col" className="border-0">
                                             Status
                                         </th>
+                                            */
+                                        }
                                         <th scope="col" className="border-0">
                                             Action
                                         </th>
@@ -55,6 +59,7 @@ const Content = ({ allSettings }) => {
                                             <td>{index + 1}</td>
 
                                             <td><Link target="_blank" to="#" onClick={() => window.open(`${FrontEndURL + value.slug}`)}>{value.title}</Link></td>
+                                            {/*
 
                                             <td>
                                                 {value.status === "active" ? (
@@ -67,11 +72,14 @@ const Content = ({ allSettings }) => {
                                                     </span>
                                                 )}
                                             </td>
+                                                */}
 
                                             <td>
-                                                <button type="button" className="btn btn-warning mr-1">
+                                                {/*
+<button type="button" className="btn btn-warning mr-1">
                                                     <i className="material-icons">build</i>
                                                 </button>
+                                                */}
                                                 <button type="button" className="btn btn-success" onClick={() => window.location.href = `settings/${value.slug}`}>
                                                     <i className="material-icons">edit</i>
                                                 </button>

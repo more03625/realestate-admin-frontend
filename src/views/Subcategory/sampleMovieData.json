@@ -1,0 +1,65 @@
+ [
+    {
+        "avatar": "https://reqres.in/img/faces/1-image.jpg",
+        "email": "george.bluth@reqres.in",
+        "first_name": "RAHUL MORE",
+        "id": 1,
+        "last_name": "Yogesh More"
+    },
+    {
+        "avatar": "https://reqres.in/img/faces/1-image.jpg",
+        "email": "george.bluth@reqres.in",
+        "first_name": "George",
+        "id": 1,
+        "last_name": "Bluth"
+    },
+    {
+        "avatar": "https://reqres.in/img/faces/1-image.jpg",
+        "email": "george.bluth@reqres.in",
+        "first_name": "George",
+        "id": 1,
+        "last_name": "Bluth"
+    },
+    {
+        "avatar": "https://reqres.in/img/faces/1-image.jpg",
+        "email": "george.bluth@reqres.in",
+        "first_name": "George",
+        "id": 1,
+        "last_name": "Bluth"
+    },
+    {
+        "avatar": "https://reqres.in/img/faces/1-image.jpg",
+        "email": "george.bluth@reqres.in",
+        "first_name": "George",
+        "id": 1,
+        "last_name": "Bluth"
+    },
+    {
+        "avatar": "https://reqres.in/img/faces/1-image.jpg",
+        "email": "george.bluth@reqres.in",
+        "first_name": "George",
+        "id": 1,
+        "last_name": "Bluth"
+    },
+    {
+        "avatar": "https://reqres.in/img/faces/1-image.jpg",
+        "email": "george.bluth@reqres.in",
+        "first_name": "George",
+        "id": 1,
+        "last_name": "Bluth"
+    },
+    {
+        "avatar": "https://reqres.in/img/faces/1-image.jpg",
+        "email": "george.bluth@reqres.in",
+        "first_name": "George",
+        "id": 1,
+        "last_name": "Bluth"
+    },
+    {
+        "avatar": "https://reqres.in/img/faces/1-image.jpg",
+        "email": "george.bluth@reqres.in",
+        "first_name": "George",
+        "id": 1,
+        "last_name": "Bluth"
+    }
+]

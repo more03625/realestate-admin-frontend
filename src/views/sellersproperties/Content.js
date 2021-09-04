@@ -132,7 +132,9 @@ const Content = () => {
                                     {sellerProperties && sellerProperties.map((value, index) => (
                                         <tr key={value.id}>
                                             <td>{index + 1}</td>
-                                            <td>{value.title}</td>
+                                            <td>
+                                                <Link to="#" onClick={(e) => redirectToView(convertToSlug(value.title), value.id, "view")}>{value.title.slice(0, 46) + "..."}</Link>
+                                            </td>
                                             <td>{value.name_for_contact}</td>
                                             <td>{value.number_for_contact}</td>
 

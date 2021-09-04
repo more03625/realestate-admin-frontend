@@ -3,7 +3,6 @@ import {
     Container,
     Row,
     Col,
-
 } from "shards-react";
 import MainNavbar from "../../components/layout/MainNavbar/MainNavbar";
 import MainSidebar from "../../components/layout/MainSidebar/MainSidebar";
@@ -11,7 +10,6 @@ import MainFooter from "../../components/layout/MainFooter";
 import Content from './Content';
 
 const Features = () => {
-    
     return (
         <Container fluid>
             <Row>

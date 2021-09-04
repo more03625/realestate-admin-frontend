@@ -2,9 +2,9 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const Host =
-  window.location.host === "localhost:3001" ? "http://localhost:5254" : "http://neprealestate.com:5254"; //Node URL
+  window.location.host === "neprealestate.com" ? "http://neprealestate.com:5254" : "http://localhost:5254"; //Node URL
 
-export const FrontEndURL = window.location.host === "localhost:3001" ? "http://localhost:3000/" : "http://neprealestate.com/"; // Home Website
+export const FrontEndURL = window.location.host === "neprealestate.com" ? "http://neprealestate.com/" : "http://localhost:3000/"; // Home Website
 
 export const capitalize = s => {
   if (typeof s !== "string") return "";
@@ -35,7 +35,7 @@ export const Endpoints = {
   getFeatures: "/admin/getfeatures?id=1",
   addfeatures: "/admin/addfeatures",
   editFeatures: "/admin/editfeatures",
-  getProperties: "/property/getPropertiesWithFilters?id=1",
+  getProperties: "/property/getPropertiesWithFilters",
   updatePropertyStatus: "/admin/updatePropertyStatus",
   agentList: "/admin/agentList",
   getSubscribers: "/admin/getSubscribers",
@@ -84,4 +84,30 @@ export const errorStyle = {
 
 export const getUserToken = () => {
   return JSON.parse(localStorage.getItem('token'));
+}
+export const cleanObject = (obj) => {
+  for (var propName in obj) {
+    if (obj[propName] === null || obj[propName] === undefined || obj[propName] === "") {
+      delete obj[propName];
+    }
+  }
+  return obj
+}
+
+export const convertToCSV = (ArrayOfObjects) => {
+  const array = [Object.keys(ArrayOfObjects[0])].concat(ArrayOfObjects)
+  return array.map(it => {
+    return Object.values(it).toString()
+  }).join('\n')
+}
+
+export const exportToCSV = (ArrayOfObjects) => {
+  console.log('Thank you for exporting!');
+  var encodedUri = encodeURI(convertToCSV(ArrayOfObjects));
+  var csv = 'data:text/csv;charset=utf-8,' + encodedUri
+  var link = document.createElement("a");
+  link.setAttribute("href", csv);
+  link.setAttribute("download", "Properties.csv");
+  document.body.appendChild(link);
+  link.click();
 }

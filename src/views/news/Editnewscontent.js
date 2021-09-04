@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
-import { Card, Container, Row, CardBody, Form, FormInput, FormGroup } from "shards-react";
+import { Card, Container, Row, CardBody, Form, FormInput, FormGroup, FormSelect } from "shards-react";
 import PageTitle from "../../components/common/PageTitle";
 import { ToastContainer } from "react-toastify";
 import "react-quill/dist/quill.snow.css";
@@ -10,7 +10,6 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Axios from "axios";
 import { Link, useHistory } from "react-router-dom";
 import { Host, Endpoints, getUserToken, errorToast, successToast } from "../../helper/comman_helpers";
-import { isValid } from "shortid";
 const Editnewscontent = ({ detailedNews, newsID, setDetailedNews, detailedNewsError, setDetailedNewsError }) => {
     console.log(detailedNews);
 
@@ -150,7 +149,21 @@ const Editnewscontent = ({ detailedNews, newsID, setDetailedNews, detailedNewsEr
                                 <p style={errorStyle}>{detailedNewsError && detailedNewsError.description}</p>
                             </div>
                         </FormGroup>
-
+                        <FormGroup>
+                            <label htmlFor="feInputState">News Type</label>
+                            <FormSelect id="feInputState" name="type" onChange={(e) => handleChange(e)}>
+                                <option>Choose News Type</option>
+                                <option value="buy">Buy</option>
+                                <option value="rent">Rent</option>
+                                <option value="share">Share</option>
+                                <option value="sold">Sold</option>
+                                {/* {states.map((value, index) => (
+                        <option key={value.id} value={value.id}>{value.state_name}</option>
+                    ))}
+                    */}
+                            </FormSelect>
+                            <p style={errorStyle}></p>
+                        </FormGroup>
                         <CKEditor
                             editor={ClassicEditor}
                             data={detailedNews && detailedNews.description}

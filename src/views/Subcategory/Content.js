@@ -77,6 +77,7 @@ const Content = () => {
     const [categoriesError, setCategoriesError] = useState();
     const [categories, setCategories] = useState([]);
     const [runUseEffect, setRunUseEffect] = useState(false);
+
     const clearAllErrors = () => {
         setAddSubCategoryNameError('');
         setAddNewCategoryError('');
@@ -91,7 +92,7 @@ const Content = () => {
             setAddNewCategoryError("Please enter valid category!")
             setAddSubCategoryNameError("Please enter a valid sub category name!");
             setAddNewCategoryImageError('Please choose image to display');
-            setAddNewPropertyTypeError('Plese select valid property type!')
+            setAddNewPropertyTypeError('Plese select valid property type!');
         }
         else {
             var addSubCategoryURL = Host + Endpoints.addSubCategory;
@@ -119,9 +120,16 @@ const Content = () => {
 
 
     const updateSubCategory = () => {
+        console.log(isImageSelected)
+
 
         if (isImageSelected === false) {
-            var addNewCategoryImage = 0;
+            console.log("In if : " + isImageSelected)
+
+            addNewCategoryImage = 0;
+        } else {
+            console.log(isImageSelected)
+
         }
         setAddSubCategoryNameError("");
         setAddNewCategoryError("");
@@ -184,8 +192,6 @@ const Content = () => {
             }
         });
     }
-
-
     const updateStatus = (id, status) => {
         var data = {
             id,
@@ -224,7 +230,7 @@ const Content = () => {
     }
 
     var modalData = (requiredItem !== null || requiredItem !== undefined) ? subCategories[requiredItem] : '';
-    console.log(modalData)
+
     const addCategoryModal = () => {
         setIsImageSelected({
             ...isImageSelected,
@@ -380,6 +386,7 @@ const Content = () => {
                                                 <button type="button" className="btn btn-warning mr-1"
                                                     onClick={() => changeStatusModal(index)}
                                                 >
+
                                                     <i className="material-icons">build</i>
                                                 </button>
                                                 <button type="button" className="btn btn-success" onClick={() => replaceModalItem(index)}>
@@ -454,7 +461,7 @@ const Content = () => {
                     </FormGroup>
 
                     <div className="custom-file mb-3">
-                        <input type="file" className="custom-file-input" id="customFile2" onChange={(e) => { uploadImage(e); }} />
+                        <input type="file" className="custom-file-input" id="customFile2" onChange={(e) => uploadImage(e)} />
                         <label className="custom-file-label" htmlFor="customFile2">
                             Choose file...
                         </label>
