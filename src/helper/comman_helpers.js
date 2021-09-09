@@ -83,7 +83,7 @@ export const errorStyle = {
 }
 
 export const getUserToken = () => {
-  return JSON.parse(localStorage.getItem('token'));
+  return JSON.parse(localStorage.getItem('nep-admin-token'));
 }
 export const cleanObject = (obj) => {
   for (var propName in obj) {
@@ -95,8 +95,10 @@ export const cleanObject = (obj) => {
 }
 
 export const convertToCSV = (ArrayOfObjects) => {
-  const array = [Object.keys(ArrayOfObjects[0])].concat(ArrayOfObjects)
-  return array.map(it => {
+  const array = [Object.keys(ArrayOfObjects[0])].concat(ArrayOfObjects);
+
+  return array.map((it) => {
+    console.log(Object.values(it).toString())
     return Object.values(it).toString()
   }).join('\n')
 }

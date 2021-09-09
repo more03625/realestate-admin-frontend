@@ -7,10 +7,11 @@ const LoggedInProtected = (props) => {
     let Component = props.component;
 
     const isLoggedIn = () => {
-        if (!localStorage.getItem('token')) {
+        if (!localStorage.getItem('nep-admin-token')) {
             console.log("Token Absent");
             history.push("/login");
         } else {
+            console.log(localStorage.getItem('nep-admin-token'))
             if (window.location.pathname === '/admin/login') {
                 history.push("/dashboard");
             }

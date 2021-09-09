@@ -19,7 +19,6 @@ import Settings from "./views/settings/Settings";
 import SettingsList from "./views/settingslist/SettingsList";
 import News from "./views/news/News";
 import Editnews from "./views/news/Editnews";
-
 import Properties from "./views/properties/Properties";
 import MyProperties from "./views/MyProperty/Properties";
 import Login from "./views/login/Login";

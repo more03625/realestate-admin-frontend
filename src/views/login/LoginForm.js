@@ -84,7 +84,7 @@ const LoginForm = () => {
                     setTimeout(function () {
                         setLoginStatus(true);
                     }, 1000);
-                    localStorage.setItem("token", JSON.stringify(response.data));
+                    localStorage.setItem("nep-admin-token", JSON.stringify(response.data));
                 }
             });
         }
@@ -96,7 +96,7 @@ const LoginForm = () => {
             {loginStatus === true && <Redirect to="/dashboard" />}
 
             <CardHeader className="border-bottom">
-                <h6 className="m-0"><img id="main-logo" style={{height:70}} className="" src={require("../../images/logo/logo.png")} alt="Shards Dashboard" /> Login To Neprealestate!</h6>
+                <h6 className="m-0"><img id="main-logo" style={{ height: 70 }} className="" src={require("../../images/logo/logo.png")} alt="Shards Dashboard" /> Login To Neprealestate!</h6>
             </CardHeader>
             <ListGroup flush>
                 <ListGroupItem className="p-3">
@@ -105,7 +105,7 @@ const LoginForm = () => {
                             <Form>
                                 <Row form>
                                     {/* First Name */}
-                                    <Col md="12" style={{marginBottom:0 }} className="form-group">
+                                    <Col md="12" style={{ marginBottom: 0 }} className="form-group">
                                         <label htmlFor="feEmail">Email</label>
                                         <FormInput
                                             type="email"

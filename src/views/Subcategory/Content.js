@@ -25,8 +25,8 @@ import {
 import $ from "jquery";
 
 const Content = () => {
-    const requiredWidth = 350;
-    const requiredHeight = 247;
+    const requiredWidth = 387;
+    const requiredHeight = 257;
     const errorStyle = {
         color: "red",
         fontSize: "14px",
@@ -553,7 +553,7 @@ const Content = () => {
 
                     <FormGroup>
                         <div className="custom-file mb-3">
-                            <Link to={"#"} onClick={() => window.open("https://www.iloveimg.com/resize-image")}>Resize image Online</Link>
+                            <Link to={"#"} onClick={() => window.open("https://www.iloveimg.com/resize-image?utm_source=neprealestate")}>Resize image Online</Link>
                         </div>
                     </FormGroup>
                 </Modal.Body>

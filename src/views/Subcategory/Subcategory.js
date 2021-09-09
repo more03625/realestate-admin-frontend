@@ -26,9 +26,9 @@ const Subcategory = () => {
                     tag="main"
                 >
                     {<MainNavbar />}
-                    {/*<Content />*/}
+                    <Content />
 
-                    <DataList />
+                    {/*<DataList />*/}
                     {/*<FullRemote />*/}
                     {/*<ContentDemo />*/}
                     {<MainFooter />}

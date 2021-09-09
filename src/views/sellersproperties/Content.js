@@ -4,7 +4,7 @@ import {
     Row,
     Col,
     Card,
-    CardBody,
+    CardBody, CardHeader, FormGroup, FormSelect
 
 } from "shards-react";
 import Axios from "axios";
@@ -18,18 +18,16 @@ import {
     Endpoints,
     successToast,
     errorToast, errorStyle,
-    getUserToken, convertToSlug, FrontEndURL
+    getUserToken, convertToSlug, FrontEndURL, cleanObject
 } from "../../helper/comman_helpers";
 import $ from "jquery";
 import { useParams } from "react-router-dom";
+import FiltersLogic from "../properties/FiltersLogic";
+import PaginationLogic from "../properties/PaginationLogic";
+import { propertyStatus } from '../../data/select.json';
 
 const Content = () => {
-    $(document).ready(function () {
-        setTimeout(function () {
-            $("#propertiesTable").DataTable();
-        }, 1000);
 
-    });
 
     const handleStatusClose = () => setshowStatusModal(false);
     const [requiredItem, setRequiredItem] = useState();
@@ -38,13 +36,36 @@ const Content = () => {
     const { sellerID } = useParams()
     const [sellerProperties, setSellerProperties] = useState([]);
 
+    // PAGINATIO & FILTER
+    const [totalResults, setTotalResults] = useState(0);
+    const [currentPage, setCurrentPage] = useState(0) // offset for Ajay
+    const [searchOptions, setSearchOptions] = useState();
+    const [loading, setLoading] = useState(false);
+    const [limit, setLimit] = useState(10);
+
+    const [status, setStatus] = useState();
+
     const getSellerProperties = async () => {
+        setLoading(true);
+        if (searchOptions && searchOptions.limit !== undefined) {
+            setLimit(searchOptions.limit)
+        }
+
+
+        var defaultSearchData = {
+            id: sellerID,
+            limit: limit,
+            offset: currentPage
+        }
+        var mergedSearchData = Object.assign(defaultSearchData, searchOptions);
+
         var url = Host + Endpoints.getPropertiesBySellerID
-        const result = await Axios.post(url, { id: sellerID });
+        const result = await Axios.post(url, cleanObject(mergedSearchData));
         if (result.data.error === false) {
             setSellerProperties(result.data.data.users);
-
+            setTotalResults(result.data.data.total);
         }
+        setLoading(false);
     }
     const redirectToView = (title, id, type) => {
         if (type == 'view') {
@@ -59,10 +80,10 @@ const Content = () => {
         setshowStatusModal(true); // Open Modal
     };
 
-    const updateStatus = (id, status) => {
+    const updateStatus = (id) => {
         var data = {
             id,
-            status: status === "active" ? "inactive" : "active"
+            status: status
         };
         var url = Host + Endpoints.updatePropertyStatus;
         Axios.post(url, data, {
@@ -84,7 +105,7 @@ const Content = () => {
 
     useEffect(() => {
         getSellerProperties();
-    }, [runUseEffect]);
+    }, [runUseEffect, currentPage]);
     return (
         <Container fluid className="main-content-container px-4">
             {/* Page Header */}
@@ -100,6 +121,17 @@ const Content = () => {
 
             <Row>
                 <Col>
+                    <CardHeader className="border-bottom">
+                        <FiltersLogic // My custom Package
+                            exportData={sellerProperties}
+                            setCurrentPage={setCurrentPage}
+                            setSearchOptions={setSearchOptions}
+                            searchOptions={searchOptions}
+                            setRunUseEffect={setRunUseEffect}
+                            runUseEffect={runUseEffect}
+                            status={propertyStatus}
+                        />
+                    </CardHeader>
                     <Card small className="mb-4">
 
                         <CardBody className="p-0 pb-3 m-2">
@@ -138,14 +170,14 @@ const Content = () => {
                                             <td>{value.name_for_contact}</td>
                                             <td>{value.number_for_contact}</td>
 
-                                            <td>
-                                                {value.status === "active" ? (
-                                                    <span style={{ color: "green" }}>
+                                            <td onClick={() => changeStatusModal(index)} style={{ cursor: "pointer" }}>
+                                                {value.status === 'active' ? (
+                                                    <span className="badge badge-success">
                                                         {capitalize(value.status)}
                                                     </span>
                                                 ) : (
-                                                    <span style={errorStyle}>
-                                                        {capitalize('Inactive')}
+                                                    <span className="badge badge-danger">
+                                                        {capitalize(value.status)}
                                                     </span>
                                                 )}
                                             </td>
@@ -171,13 +203,22 @@ const Content = () => {
                                                     <i className="material-icons">edit</i>
                                                 </Link>
 
-                                                <button type="button" className="btn btn-warning mr-1" onClick={() => changeStatusModal(index)}
-                                                ><i className="material-icons">build</i></button>
+
                                             </td>
                                         </tr>
                                     ))}
                                 </tbody>
                             </table>
+
+
+                            <PaginationLogic // My custom Package
+                                setCurrentPage={setCurrentPage}
+                                currentPage={currentPage}
+                                totalResults={totalResults}
+                                limit={limit}
+                                paginationData={sellerProperties}
+                                loading={loading}
+                            />
                         </CardBody>
                     </Card>
                 </Col>
@@ -187,7 +228,18 @@ const Content = () => {
                     <Modal.Title>Update Status</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    Are you sure you want to <b>{`${modalData && modalData.status === 'active' ? 'Deactivate' : 'Activate'}`}</b> this property?
+                    <FormGroup>
+                        <FormSelect id="feInputState" name="status" defaultValue={modalData && modalData.status} onChange={(e) => setStatus(e.target.value)}>
+                            <option value="">property status</option>
+
+                            {
+                                propertyStatus.map((value, index) => (
+                                    <option value={value}>{capitalize(value)}</option>
+                                ))
+                            }
+
+                        </FormSelect>
+                    </FormGroup>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleStatusClose}>
@@ -195,9 +247,9 @@ const Content = () => {
                     </Button>
                     <Button
                         variant="danger"
-                        onClick={() => updateStatus(modalData.id, modalData.status)}
+                        onClick={() => updateStatus(modalData.id)}
                     >
-                        {`${modalData && modalData.status === 'active' ? 'Deactivate' : 'Activate'}`}
+                        Update
                     </Button>
                 </Modal.Footer>
             </Modal>

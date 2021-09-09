@@ -11,7 +11,7 @@ import MainFooter from "../../components/layout/MainFooter";
 import Content from './Content';
 
 const Features = () => {
-    
+
     return (
         <Container fluid>
             <Row>

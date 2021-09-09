@@ -1,0 +1,716 @@
+{
+    "areaMeasurement":[
+        "sqmt",
+        "sqft",
+        "ropani",
+        "aana",
+        "paisa",
+        "daam",
+        "bigga",
+        "kattha",
+        "dhur"
+    ],
+    "locationlist":[
+        "Any Location",
+        "California, CA",
+        "Lawndale, CA",
+        "Stroudsburg, PA",
+        "West Roxbury, MA",
+        "Ponte Vedra Beach, FL",
+        "Fort Worth, TX",
+        "Willingboro, NJ"
+    ],
+    "furnishing":[
+        "Full-Furnished",
+        "Un-Furnished",
+        "Semi-Furnished"
+    ],
+    "propertyStatus":[
+        "pending",
+        "active",
+        "inactive",
+        "sold",
+        "rented"
+    ],
+    "userStatus":[
+        "active",
+        "inactive",
+        "blocked"
+    ],
+    "pricerangelist":[
+        {
+            "id": "0",
+            "text": "Any"
+        },
+        {
+            "id": "50000",
+            "text": "Rs. 50000"
+        },
+        {
+            "id": "75000",
+            "text": "Rs. 75,000"
+        },
+        {
+            "id": "100000",
+            "text": "Rs. 100,000"
+        },
+        {
+            "id": "125000",
+            "text": "Rs. 125,000"
+        },
+        {
+            "id": "150000",
+            "text": "Rs. 150,000"
+        },
+        {
+            "id": "175000",
+            "text": "Rs. 175,000"
+        },
+        {
+            "id": "200000",
+            "text": "Rs. 200,000"
+        },
+        {
+            "id": "225000",
+            "text": "Rs. 225,000"
+        },
+        {
+            "id": "250000",
+            "text": "Rs. 250,000"
+        },
+        {
+            "id": "275000",
+            "text": "Rs. 275,000"
+        },
+        {
+            "id": "300000",
+            "text": "Rs. 300,000"
+        },
+        {
+            "id": "325000",
+            "text": "Rs. 325,000"
+        },
+        {
+            "id": "350000",
+            "text": "Rs. 350,000"
+        },
+        {
+            "id": "375000",
+            "text": "Rs. 375,000"
+        },
+        {
+            "id": "400000",
+            "text": "Rs. 400,000"
+        },
+        {
+            "id": "425000",
+            "text": "Rs. 425,000"
+        },
+        {
+            "id": "450000",
+            "text": "Rs. 450,000"
+        },
+        {
+            "id": "475000",
+            "text": "Rs. 475,000"
+        },
+        {
+            "id": "500000",
+            "text": "Rs. 500,000"
+        },
+        {
+            "id": "550000",
+            "text": "Rs. 550,000"
+        },
+        {
+            "id": "600000",
+            "text": "Rs. 600,000"
+        },
+        {
+            "id": "650000",
+            "text": "Rs. 650,000"
+        },
+        {
+            "id": "700000",
+            "text": "Rs. 700,000"
+        },
+        {
+            "id": "750000",
+            "text": "Rs. 750,000"
+        },
+        {
+            "id": "800000",
+            "text": "Rs. 800,000"
+        },
+        {
+            "id": "850000",
+            "text": "Rs. 850,000"
+        },
+        {
+            "id": "900000",
+            "text": "Rs. 900,000"
+        },
+        {
+            "id": "950000",
+            "text": "Rs. 950,000"
+        },
+        {
+            "id": "1000000",
+            "text": "Rs. 1,000,000"
+        },
+        {
+            "id": "1100000",
+            "text": "Rs. 1,100,000"
+        },
+        {
+            "id": "1200000",
+            "text": "Rs. 1,200,000"
+        },
+        {
+            "id": "1300000",
+            "text": "Rs. 1,300,000"
+        },
+        {
+            "id": "1400000",
+            "text": "Rs. 1,400,000"
+        },
+        {
+            "id": "1500000",
+            "text": "Rs. 1,500,000"
+        },
+        {
+            "id": "1600000",
+            "text": "Rs. 1,600,000"
+        },
+        {
+            "id": "1700000",
+            "text": "Rs. 1,700,000"
+        },
+        {
+            "id": "1800000",
+            "text": "Rs. 1,800,000"
+        },
+        {
+            "id": "1900000",
+            "text": "Rs. 1,900,000"
+        },
+        {
+            "id": "2000000",
+            "text": "Rs. 2,000,000"
+        },
+        {
+            "id": "2250000",
+            "text": "Rs. 2,250,000"
+        },
+        {
+            "id": "2500000",
+            "text": "Rs. 2,500,000"
+        },
+        {
+            "id": "2750000",
+            "text": "Rs. 2,750,000"
+        },
+        {
+            "id": "3000000",
+            "text": "Rs. 3,000,000"
+        },
+        {
+            "id": "3500000",
+            "text": "Rs. 3,500,000"
+        },
+        {
+            "id": "4000000",
+            "text": "Rs. 4,000,000"
+        },
+        {
+            "id": "4500000",
+            "text": "Rs. 4,500,000"
+        },
+        {
+            "id": "5000000",
+            "text": "Rs. 5,000,000"
+        },
+        {
+            "id": "6000000",
+            "text": "Rs. 6,000,000"
+        },
+        {
+            "id": "7000000",
+            "text": "Rs. 7,000,000"
+        },
+        {
+            "id": "8000000",
+            "text": "Rs. 8,000,000"
+        },
+        {
+            "id": "9000000",
+            "text": "Rs. 9,000,000"
+        },
+        {
+            "id": "10000000",
+            "text": "Rs. 10,000,000"
+        },
+        {
+            "id": "12000000",
+            "text": "Rs. 12,000,000"
+        },
+        {
+            "id": "15000000",
+            "text": "Rs. 15,000,000"
+        }
+    ],
+    "options":[
+        {
+            "id": 1,
+            "value": "9ce42304-b732-4791-9731-6f299b6df8c7",
+            "label": "Blue"
+          }, {
+            "id": 2,
+            "value": "90419f06-7d07-45c8-bcec-d675096fe27f",
+            "label": "Goldenrod"
+          }, {
+            "id": 3,
+            "value": "a23521da-0a48-4ef6-baa2-d727704f65c2",
+            "label": "Teal"
+          }, {
+            "id": 4,
+            "value": "34b2b58a-0123-49e2-b2de-1eef0922139b",
+            "label": "Puce"
+          }, {
+            "id": 5,
+            "value": "0fceaec7-fb46-4aef-994b-863a97130168",
+            "label": "Khaki"
+          }, {
+            "id": 6,
+            "value": "b68c6b76-bbe0-49a6-8a90-209b8d88d353",
+            "label": "Green"
+          }, {
+            "id": 7,
+            "value": "e2829c11-0960-490c-b19b-5c5bb26a18ce",
+            "label": "Crimson"
+          },  {
+            "id": 9,
+            "value": "841e6f9f-1e19-4501-8b75-cd153282ed21",
+            "label": "Orange"
+          }, {
+            "id": 10,
+            "value": "9346ba4b-8b3e-4c06-b930-cb3d98c58890",
+            "label": "Turquoise"
+          }, {
+            "id": 11,
+            "value": "7294d507-d6c5-47bf-8ef3-c291c273b647",
+            "label": "Violet"
+          }, {
+            "id": 12,
+            "value": "451d4254-a882-4d53-a4ca-c7cb4707d1a5",
+            "label": "Red"
+          }, {
+            "id": 15,
+            "value": "2378fade-f686-4f0d-bf00-4e5213032c9b",
+            "label": "Aquamarine"
+          },    {
+            "id": 20,
+            "value": "77ec7a0b-329d-4643-bbc7-0fa12c788ded",
+            "label": "Mauv"
+          }
+    ],
+    "maxpricerangelist":[
+        {
+            "id": "0",
+            "text": "Any"
+        },
+        {
+            "id": "50000",
+            "text": "Rs. 50000"
+        },
+        {
+            "id": "75000",
+            "text": "Rs. 75,000"
+        },
+        {
+            "id": "100000",
+            "text": "Rs. 100,000"
+        },
+        {
+            "id": "125000",
+            "text": "Rs. 125,000"
+        },
+        {
+            "id": "150000",
+            "text": "Rs. 150,000"
+        },
+        {
+            "id": "175000",
+            "text": "Rs. 175,000"
+        },
+        {
+            "id": "200000",
+            "text": "Rs. 200,000"
+        },
+        {
+            "id": "225000",
+            "text": "Rs. 225,000"
+        },
+        {
+            "id": "250000",
+            "text": "Rs. 250,000"
+        },
+        {
+            "id": "275000",
+            "text": "Rs. 275,000"
+        },
+        {
+            "id": "300000",
+            "text": "Rs. 300,000"
+        },
+        {
+            "id": "325000",
+            "text": "Rs. 325,000"
+        },
+        {
+            "id": "350000",
+            "text": "Rs. 350,000"
+        },
+        {
+            "id": "375000",
+            "text": "Rs. 375,000"
+        },
+        {
+            "id": "400000",
+            "text": "Rs. 400,000"
+        },
+        {
+            "id": "425000",
+            "text": "Rs. 425,000"
+        },
+        {
+            "id": "450000",
+            "text": "Rs. 450,000"
+        },
+        {
+            "id": "475000",
+            "text": "Rs. 475,000"
+        },
+        {
+            "id": "500000",
+            "text": "Rs. 500,000"
+        },
+        {
+            "id": "550000",
+            "text": "Rs. 550,000"
+        },
+        {
+            "id": "600000",
+            "text": "Rs. 600,000"
+        },
+        {
+            "id": "650000",
+            "text": "Rs. 650,000"
+        },
+        {
+            "id": "700000",
+            "text": "Rs. 700,000"
+        },
+        {
+            "id": "750000",
+            "text": "Rs. 750,000"
+        },
+        {
+            "id": "800000",
+            "text": "Rs. 800,000"
+        },
+        {
+            "id": "850000",
+            "text": "Rs. 850,000"
+        },
+        {
+            "id": "900000",
+            "text": "Rs. 900,000"
+        },
+        {
+            "id": "950000",
+            "text": "Rs. 950,000"
+        },
+        {
+            "id": "1000000",
+            "text": "Rs. 1,000,000"
+        },
+        {
+            "id": "1100000",
+            "text": "Rs. 1,100,000"
+        },
+        {
+            "id": "1200000",
+            "text": "Rs. 1,200,000"
+        },
+        {
+            "id": "1300000",
+            "text": "Rs. 1,300,000"
+        },
+        {
+            "id": "1400000",
+            "text": "Rs. 1,400,000"
+        },
+        {
+            "id": "1500000",
+            "text": "Rs. 1,500,000"
+        },
+        {
+            "id": "1600000",
+            "text": "Rs. 1,600,000"
+        },
+        {
+            "id": "1700000",
+            "text": "Rs. 1,700,000"
+        },
+        {
+            "id": "1800000",
+            "text": "Rs. 1,800,000"
+        },
+        {
+            "id": "1900000",
+            "text": "Rs. 1,900,000"
+        },
+        {
+            "id": "2000000",
+            "text": "Rs. 2,000,000"
+        },
+        {
+            "id": "2250000",
+            "text": "Rs. 2,250,000"
+        },
+        {
+            "id": "2500000",
+            "text": "Rs. 2,500,000"
+        },
+        {
+            "id": "2750000",
+            "text": "Rs. 2,750,000"
+        },
+        {
+            "id": "3000000",
+            "text": "Rs. 3,000,000"
+        },
+        {
+            "id": "3500000",
+            "text": "Rs. 3,500,000"
+        },
+        {
+            "id": "4000000",
+            "text": "Rs. 4,000,000"
+        },
+        {
+            "id": "4500000",
+            "text": "Rs. 4,500,000"
+        },
+        {
+            "id": "5000000",
+            "text": "Rs. 5,000,000"
+        },
+        {
+            "id": "6000000",
+            "text": "Rs. 6,000,000"
+        },
+        {
+            "id": "7000000",
+            "text": "Rs. 7,000,000"
+        },
+        {
+            "id": "8000000",
+            "text": "Rs. 8,000,000"
+        },
+        {
+            "id": "9000000",
+            "text": "Rs. 9,000,000"
+        },
+        {
+            "id": "10000000",
+            "text": "Rs. 10,000,000"
+        },
+        {
+            "id": "12000000",
+            "text": "Rs. 12,000,000"
+        },
+        {
+            "id": "15000000",
+            "text": "Rs. 15,000,000"
+        }
+    ],
+    "bedslist":[
+        "Any",
+        "1 Bed",
+        "2 Beds",
+        "3 Beds",
+        "4 Beds",
+        "5 Beds"
+    ],
+    "priceOn":[
+        "Per Year",
+        "Per Month",
+        "Per Aana",
+        "Per Sq.Feet",
+        "Per Ropani",
+        "Total Amount",
+        "Kattha"
+    ],
+    "featuresType":[
+        "Indoor Features",
+        "Outdoor Features",
+        "Climet control & energy"
+    ],
+    "carspaces":[
+        "Any",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5+"
+    ],
+    "bathroomslist":[
+        "Any",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5+"
+    ],
+    "rooms":[
+        "Any",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5+"
+    ],
+    "subCategories":[
+        "All types",
+        "House",
+        "Apartment Unit",
+        "Land",
+        "Shop",
+        "Flat",
+        "Townhouse",
+        "Villa",
+        "Acreage",
+        "Rural",
+        "Block of Units",
+        "Retirement Living"
+    ],
+    "diameterlist":[
+        "Any Range",
+        "Within 2 miles",
+        "Within 4 miles",
+        "Within 6 miles",
+        "Within 8 miles",
+        "Within 10 miles",
+        "Within 22 miles"
+    ],
+    "floorlist":[
+        "Any floor",
+        "1st",
+        "2nd",
+        "3rd",
+        "4th",
+        "5th"
+    ],
+    "sortbylist":[
+        "Any",
+        "Top Selling",
+        "Most Popular",
+        "Price: High - Low",
+        "Price: Low - High",
+        "Number of baths",
+        "Number of beds"
+    ],
+    "userTypeDrop":[
+        "Agent",
+        "Owner",
+        "Builder",
+        "Franchise"
+    ],
+    "category":[
+        "Any Type",
+        "Residential", 
+        "commercial"
+    ],
+    "type":[
+        "Buy",
+        "Rent",
+        "Sold",
+        "Share",
+        "Lease",
+        "Invest",
+        "Sold"
+    ],
+    "facing":[
+        "South",
+        "North",
+        "East",
+        "West",
+        "South-East",
+        "South-West",
+        "North-East",
+        "North-West"
+    ],
+    "areaUnit":[
+        "sqft",
+        "sqmt",
+        "daam",
+        "paisa",
+        "aana",
+        "ropani",
+        "dhur",
+        "kattha",
+        "bigga"
+    ],
+    "buildType":[
+        "Old",
+        "New"
+    ],
+    "roadType":[
+        "Soil Stabilized",
+        "Gravelled",
+        "Paved",
+        "Black Topped",
+        "Alley"
+    ],
+    "areaSize":[
+        "200 Ropani",
+        "300 Ropani",
+        "400 Ropani",
+        "500 Ropani",
+        "600 Ropani",
+        "700 Ropani",
+        "800 Ropani",
+        "900 Ropani",
+        "1,000 Ropani",
+        "1,200 Ropani",
+        "1,500 Ropani",
+        "1,750 Ropani",
+        "2,000 Ropani",
+        "3,000 Ropani",
+        "4,000 Ropani",
+        "5,000 Ropani",
+        "10,000 Ropani",
+        "20,000 Ropani",
+        "30,000 Ropani",
+        "40,000 Ropani",
+        "50,000 Ropani",
+        "100,000 Ropani",
+        "200,000 Ropani",
+        "300,000 Ropani",
+        "400,000 Ropani",
+        "500,000 Ropani",
+        "600,000 Ropani",
+        "700,000 Ropani",
+        "800,000 Ropani",
+        "900,000 Ropani"
+    ],
+    "paginationLimit":[
+        "25",
+        "50",
+        "100",
+        "250",
+        "500"
+    ]
+}

@@ -1,24 +1,47 @@
 import React from 'react'
-import {
-    Container,
-    Row,
-    Col,
-    Card,
-    CardHeader,
-    CardBody,
-    FormCheckbox,
-    FormGroup, FormInput, FormSelect, Alert, NavItem, object
-} from "shards-react";
-function PaginationLogic() {
+import { FormGroup } from "shards-react";
+import { Link } from "react-router-dom";
+import { Spinner } from 'react-bootstrap';
+const PaginationLogic = ({ setCurrentPage, currentPage, totalResults, limit, paginationData, loading }) => {
+
+    const handlePagination = (event) => {
+        if (event.target.getAttribute("data-action") === 'next') {
+            setCurrentPage(currentPage + 1);
+        } else if (event.target.getAttribute("data-action") === 'previous') {
+            setCurrentPage(currentPage - 1)
+        } else {
+            setCurrentPage(Number(event.target.getAttribute("data-page")) - 1)
+        }
+    }
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(totalResults / limit); i++) {
+        pageNumbers.push(i);
+    }
     return (
         <>
-
+            <div className="row">
+                {
+                    loading === true ? (
+                        <div className="col-md-12 d-flex justify-content-center">
+                            <Spinner animation="border" role="status"></Spinner>
+                        </div>
+                    ) : ("")
+                }
+            </div>
+            <div className="row">
+                {
+                    paginationData && paginationData.length === 0 ? (
+                        <div className="col-md-12 d-flex justify-content-center">
+                            <p className="no-results mt-5">There are no results. try to modify your filter</p>
+                        </div>
+                    ) : ("")
+                }
+            </div>
             <div className="row mr-2 mt-5">
                 <div className="col-md-6 col-6">
                     <FormGroup>
-                        <p>Showing page {currentPage + 1} With {properties && properties.length} results. ( Total {totalResults} )</p>
+                        <p>Showing page {currentPage + 1} With {paginationData && paginationData.length} results. ( Total {totalResults} )</p>
                     </FormGroup>
-
                 </div>
                 <div className="col-md-6 col-6">
                     <FormGroup>

@@ -18,50 +18,62 @@ import {
     Host,
     Endpoints,
     successToast,
-    errorToast, errorStyle, convertToSlug, FrontEndURL,
+    errorToast, errorStyle, convertToSlug, FrontEndURL, cleanObject,
     getUserToken
 } from "../../helper/comman_helpers";
 import Axios from 'axios';
 import { Modal, Button } from "react-bootstrap";
-import $ from "jquery";
-
-
+import { propertyStatus } from '../../data/select.json'
+import FiltersLogic from '../properties/FiltersLogic';
+import PaginationLogic from '../properties/PaginationLogic';
 const Content = () => {
-    $(document).ready(function () {
-        setTimeout(function () {
-            $("#propertiesTable").DataTable();
-        }, 1000);
 
-    });
     const [requiredItem, setRequiredItem] = useState();
     const [properties, setProperties] = useState();
     const [showStatusModal, setshowStatusModal] = useState(false);
     const [costData, setCostData] = useState([]);
     const [costDataError, setCostDataError] = useState([]);
     const [chargesModal, setChargesModal] = useState(false);
-    const [runUseEffect, setRunUseEffect] = useState(false);
 
+    const [runUseEffect, setRunUseEffect] = useState(false);
+    const [currentPage, setCurrentPage] = useState(0) // offset for Ajay
+    const [searchOptions, setSearchOptions] = useState();
+    const [totalResults, setTotalResults] = useState(0);
+    const [limit, setLimit] = useState(10);
+    const [loading, setLoading] = useState(false);
 
     const handleStatusClose = () => setshowStatusModal(false);
     const handleAddChargesModalClose = () => setChargesModal(false);
     const location = useLocation();
 
     const getProperties = async () => {
-        var url = Host + Endpoints.getProperties;
-        if (location.pathname == '/my-properties') {
-            var url = Host + Endpoints.getProperties + '&myproperty=' + getUserToken().data.id;
+        setLoading(true);
+        if (searchOptions && searchOptions.limit !== undefined) {
+            setLimit(searchOptions.limit)
         }
-        var result = await Axios.post(url);
+
+
+        var defaultSearchData = {
+            limit: limit,
+            offset: currentPage
+        }
+        var mergedSearchData = Object.assign(defaultSearchData, searchOptions);
+        var url = Host + Endpoints.getProperties + '?myproperty=' + getUserToken().data.id; // For admin
+        const result = await Axios.post(url, cleanObject(mergedSearchData));
         setProperties(result.data.data.properties);
+        setTotalResults(result.data.data.total);
+        setLoading(false);
     }
+
     useEffect(() => {
         getProperties();
-    }, [runUseEffect])
+    }, [currentPage, runUseEffect])
+    const [status, setStatus] = useState();
 
-    const updateStatus = (id, status) => {
+    const updateStatus = (id) => {
         var data = {
             id,
-            status: status === "active" ? "inactive" : "active"
+            status: status
         };
         var url = Host + Endpoints.updatePropertyStatus;
         Axios.post(url, data, {
@@ -74,8 +86,6 @@ const Content = () => {
             } else {
                 successToast(response.data.title);
                 getProperties();
-                setRunUseEffect(!runUseEffect);
-
                 setshowStatusModal(false);
             }
         });
@@ -96,7 +106,6 @@ const Content = () => {
         window.open(url)
     }
 
-
     const isValidCharges = () => {
         if (costData.admin_cost === '' || costData.admin_cost === null || costData.admin_cost === undefined) {
             setCostDataError({ 'admin_cost': "Please enter valid amount" })
@@ -104,7 +113,6 @@ const Content = () => {
             return true;
         }
     }
-
     const addCharges = async () => {
         Object.assign(costData, { id: modalData.id });
         if (isValidCharges()) {
@@ -117,15 +125,12 @@ const Content = () => {
             if (result.data.error === true) {
                 errorToast(result.data.title)
             } else {
-
                 successToast(result.data.title);
                 setChargesModal(false);
                 setRunUseEffect(!runUseEffect);
-
             }
-
         } else {
-            console.log('There are some errors@')
+            console.log('There are some errors@');
         }
     }
 
@@ -136,7 +141,6 @@ const Content = () => {
     const handleOnChange = (e) => {
         setCostData({ ...costData, [e.target.name]: e.target.value });
     }
-
 
     return (
         <>
@@ -154,6 +158,17 @@ const Content = () => {
 
                 <Row>
                     <Col>
+                        <CardHeader className="border-bottom">
+                            <FiltersLogic
+                                exportData={properties}
+                                setCurrentPage={setCurrentPage}
+                                setSearchOptions={setSearchOptions}
+                                searchOptions={searchOptions}
+                                setRunUseEffect={setRunUseEffect}
+                                runUseEffect={runUseEffect}
+                                status={propertyStatus}
+                            />
+                        </CardHeader>
                         <Card small className="mb-4">
 
                             <CardBody className="p-0 pb-3 m-2">
@@ -193,14 +208,14 @@ const Content = () => {
 
                                                     <td>{value.name_for_contact}</td>
                                                     <td>{value.number_for_contact}</td>
-                                                    <td>
+                                                    <td onClick={() => changeStatusModal(index)} style={{ cursor: "pointer" }}>
                                                         {value.status === 'active' ? (
-                                                            <span style={{ color: "green" }}>
-                                                                Active
+                                                            <span className="badge badge-success">
+                                                                {capitalize(value.status)}
                                                             </span>
                                                         ) : (
-                                                            <span style={errorStyle}>
-                                                                InActive
+                                                            <span className="badge badge-danger">
+                                                                {capitalize(value.status)}
                                                             </span>
                                                         )}
                                                     </td>
@@ -224,8 +239,7 @@ const Content = () => {
                                                             <i className="material-icons">edit</i>
                                                         </Link>
 
-                                                        <button type="button" className="btn btn-warning mr-1" onClick={() => changeStatusModal(index)}
-                                                        ><i className="material-icons">build</i></button>
+
                                                         {
                                                             getUserToken().data.id !== value.user_id ?
 
@@ -243,6 +257,14 @@ const Content = () => {
                                             ))}
                                     </tbody>
                                 </table>
+                                <PaginationLogic
+                                    setCurrentPage={setCurrentPage}
+                                    currentPage={currentPage}
+                                    totalResults={totalResults}
+                                    limit={limit}
+                                    paginationData={properties}
+                                    loading={loading}
+                                />
                             </CardBody>
                         </Card>
                     </Col>
@@ -253,7 +275,18 @@ const Content = () => {
                         <Modal.Title>Update Status</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        Are you sure you want to <b>{`${modalData && modalData.status === 'active' ? 'Deactivate' : 'Activate'}`}</b> this property?
+                        <FormGroup>
+                            <FormSelect id="feInputState" name="status" defaultValue={modalData && modalData.status} onChange={(e) => setStatus(e.target.value)}>
+                                <option value="">property status</option>
+
+                                {
+                                    propertyStatus.map((value, index) => (
+                                        <option value={value}>{capitalize(value)}</option>
+                                    ))
+                                }
+
+                            </FormSelect>
+                        </FormGroup>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handleStatusClose}>
@@ -261,9 +294,9 @@ const Content = () => {
                         </Button>
                         <Button
                             variant="danger"
-                            onClick={() => updateStatus(modalData.id, modalData.status)}
+                            onClick={() => updateStatus(modalData.id)}
                         >
-                            {`${modalData && modalData.status === 'active' ? 'Deactivate' : 'Activate'}`}
+                            Update
                         </Button>
                     </Modal.Footer>
                 </Modal>

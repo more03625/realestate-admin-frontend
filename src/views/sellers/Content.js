@@ -12,7 +12,7 @@ import {
   CardBody,
   FormCheckbox,
   FormGroup,
-  FormInput
+  FormInput, FormSelect
 } from "shards-react";
 import Axios from "axios";
 import PageTitle from "../../components/common/PageTitle";
@@ -20,52 +20,63 @@ import { Modal, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Badge from "react-bootstrap/Badge";
 import { ToastContainer } from "react-toastify";
-
+import { userStatus } from '../../data/select.json';
 import {
   capitalize,
   Host,
   Endpoints,
   successToast,
   errorToast,
-  getUserToken
+  getUserToken, cleanObject
 } from "../../helper/comman_helpers";
+import FiltersLogic from '../../views/properties/FiltersLogic';
+import PaginationLogic from '../../views/properties/PaginationLogic';
 
 const Content = () => {
-  $(document).ready(function () {
-    setTimeout(function () {
-      $("#example").DataTable();
-    }, 1000);
-
-  });
 
   const [show, setShow] = useState(false);
   const [showSeller, setShowSeller] = useState(false);
   const [requiredItem, setRequiredItem] = useState();
   const [users, setUsers] = useState([]);
   const [usersError, setUsersError] = useState();
-
+  const [currentPage, setCurrentPage] = useState(0) // offset for Ajay
+  const [searchOptions, setSearchOptions] = useState();
   const [runUseEffect, setRunUseEffect] = useState(false);
+  const [totalResults, setTotalResults] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [limit, setLimit] = useState(5);
 
-  const getUsers = () => {
-    Axios.post(url, {
-      "limit": 200
-    }, {
+  const getUsers = async () => {
+
+    if (searchOptions && searchOptions.limit !== undefined) {
+      setLimit(parseInt(searchOptions.limit))
+    }
+    setLoading(true);
+
+    var defaultSearchData = {
+      limit: limit,
+      offset: currentPage
+    }
+    var mergedSearchData = Object.assign(defaultSearchData, searchOptions);
+    var url = Host + Endpoints.getSellers;
+    const result = await Axios.post(url, cleanObject(mergedSearchData), {
       headers: {
         token: `${getUserToken().token}`,
       }
-    }).then(response => {
-      if (response.data.error === true) {
-        setUsersError(response.data.title);
-      } else {
-        setUsers(response.data.data.users);
-      }
     });
+    if (result.data.error === true) {
+      setUsersError(result.data.title);
+    } else {
+      setTotalResults(result.data.data.total);
+      setUsers(result.data.data.users);
+    }
+    setLoading(false);
   };
-
+  const [status, setStatus] = useState();
   const updateUser = (userID, userStatus) => {
     var data = {
       user_id: userID,
-      status: userStatus === "blocked" ? "active" : "blocked"
+      status: status
     };
     var url = Host + Endpoints.changeUserStatus;
     Axios.post(url, data, {
@@ -104,11 +115,10 @@ const Content = () => {
       ? users[requiredItem]
       : "";
 
-  var url = Host + Endpoints.getSellers;
 
   useEffect(() => {
     getUsers();
-  }, [runUseEffect]);
+  }, [runUseEffect, currentPage]);
 
   return (
     <Container fluid className="main-content-container px-4">
@@ -124,6 +134,17 @@ const Content = () => {
 
       <Row>
         <Col>
+          <CardHeader className="border-bottom">
+            <FiltersLogic // My custom Package
+              exportData={users}
+              setCurrentPage={setCurrentPage}
+              setSearchOptions={setSearchOptions}
+              searchOptions={searchOptions}
+              setRunUseEffect={setRunUseEffect}
+              runUseEffect={runUseEffect}
+              status={userStatus}
+            />
+          </CardHeader>
           <Card small className="mb-4">
             <CardHeader className="border-bottom">
               <h6 className="m-0">List of all Sellers!</h6>
@@ -163,25 +184,19 @@ const Content = () => {
                       <td>{value.email}</td>
                       <td>{value.mobile}</td>
                       <td>{capitalize(value.user_type)}</td>
-                      <td>
+                      <td style={{ cursor: "pointer" }} onClick={() => replaceModalItem(index)}>
                         {value.status === "active" ? (
-                          <span style={{ color: "green" }}>
+                          <span className="badge badge-success">
                             {capitalize(value.status)}
                           </span>
                         ) : (
-                          <span style={{ color: "red" }}>
+                          <span className="badge badge-danger">
                             {capitalize(value.status)}
                           </span>
                         )}
                       </td>
                       <td>
-                        <button
-                          type="button"
-                          className="btn btn-warning mr-1"
-                          onClick={() => replaceModalItem(index)}
-                        >
-                          <i className="material-icons">build</i>
-                        </button>
+
                         <Link
                           type="button"
                           className="btn btn-info mr-1"
@@ -201,6 +216,14 @@ const Content = () => {
                   ))}
                 </tbody>
               </table>
+              <PaginationLogic // My custom Package
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
+                totalResults={totalResults}
+                limit={limit}
+                paginationData={users}
+                loading={loading}
+              />
               <ToastContainer />
             </CardBody>
           </Card>
@@ -212,7 +235,18 @@ const Content = () => {
           <Modal.Title>Update Status</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Are you sure you want to {`${modalData && modalData.status === 'active' ? 'Deactivate' : 'Activate'}`} this user ?
+
+          <FormGroup>
+            <FormSelect id="feInputState" name="status" defaultValue={modalData && modalData.status} onChange={(e) => setStatus(e.target.value)}>
+              <option value="">property status</option>
+              {
+                userStatus.map((value, index) => (
+                  <option value={value}>{capitalize(value)}</option>
+                ))
+              }
+            </FormSelect>
+          </FormGroup>
+
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
@@ -220,48 +254,48 @@ const Content = () => {
           </Button>
           <Button
             variant="danger"
-            onClick={() => updateUser(modalData.id, modalData.status)}
+            onClick={() => updateUser(modalData.id)}
           >
-            {`${modalData && modalData.status === 'active' ? 'Deactivate' : 'Activate'}`}
+            Update
           </Button>
         </Modal.Footer>
       </Modal>
 
       <Modal size="lg" show={showSeller} onHide={handleCloseSeller}>
         <Modal.Header closeButton>
-            <Modal.Title>Seller Details</Modal.Title>
+          <Modal.Title>Seller Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <FormGroup>
-                <label>Name</label>
-                <FormInput readOnly= {true}  defaultValue={modalData && modalData.name !== undefined ? capitalize(modalData.name) : ''} />
-            </FormGroup>
+          <FormGroup>
+            <label>Name</label>
+            <FormInput readOnly={true} defaultValue={modalData && modalData.name !== undefined ? capitalize(modalData.name) : ''} />
+          </FormGroup>
 
-            <FormGroup>
-                <label> Email </label>
-                <FormInput readOnly= {true}  defaultValue={modalData && modalData.email !== undefined ? modalData.email : ''} />
-            </FormGroup>
+          <FormGroup>
+            <label> Email </label>
+            <FormInput readOnly={true} defaultValue={modalData && modalData.email !== undefined ? modalData.email : ''} />
+          </FormGroup>
 
-            <FormGroup>
-                <label>Mobile</label>
-                <FormInput readOnly= {true}  defaultValue={modalData && modalData.mobile !== undefined ? modalData.mobile : ''} />
-            </FormGroup>
+          <FormGroup>
+            <label>Mobile</label>
+            <FormInput readOnly={true} defaultValue={modalData && modalData.mobile !== undefined ? modalData.mobile : ''} />
+          </FormGroup>
 
-            <FormGroup>
-                <label>User Type</label>
-                <FormInput readOnly= {true}  defaultValue={modalData && modalData.user_type !== undefined ? capitalize(modalData.user_type) : ''} />
-            </FormGroup>
+          <FormGroup>
+            <label>User Type</label>
+            <FormInput readOnly={true} defaultValue={modalData && modalData.user_type !== undefined ? capitalize(modalData.user_type) : ''} />
+          </FormGroup>
 
-            <FormGroup>
-                <label>Status</label>
-                <FormInput readOnly= {true}  defaultValue={modalData && modalData.status !== undefined ? capitalize(modalData.status) : ''} />
-            </FormGroup>
+          <FormGroup>
+            <label>Status</label>
+            <FormInput readOnly={true} defaultValue={modalData && modalData.status !== undefined ? capitalize(modalData.status) : ''} />
+          </FormGroup>
         </Modal.Body>
 
         <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseSeller}>
-                Close
-            </Button>
+          <Button variant="secondary" onClick={handleCloseSeller}>
+            Close
+          </Button>
         </Modal.Footer>
       </Modal>
     </Container>
