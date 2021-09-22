@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 import {
     Container,
     Row,
@@ -11,28 +11,23 @@ import {
     FormInput,
     FormSelect
 } from "shards-react";
-import Axios from 'axios';
-import { Endpoints, errorToast, Host, errorStyle, getUserToken, successToast } from '../../helper/comman_helpers'
-import PageTitle from '../../components/common/PageTitle';
+import Axios from "axios";
+import PageTitle from "../../../components/common/PageTitle";
+import { Host, Endpoints, errorToast, successToast, errorStyle, getUserToken } from '../../../helper/comman_helpers'
 import { ToastContainer } from 'react-toastify';
 import { Modal, Button } from "react-bootstrap";
 
 export default function Content() {
-    const [cities, setCities] = useState([]);
-    const [citiesData, setCitiesData] = useState({});
-    const [citiesError, setCitiesError] = useState({});
-    const [show, setShow] = useState(false);
-    const [editShow, setEditShow] = useState(false);
-    const [states, setStates] = useState([]);
     const [districts, setDistricts] = useState([]);
+    const [districtsData, setDistrictsData] = useState({});
+    const [districtsError, setDistrictsError] = useState({});
+    const [states, setStates] = useState([]);
 
-    // Pagination
+    const [show, setShow] = useState(false);
+
+    // Edit
+    const [editShow, setEditShow] = useState(false);
     const [runUseEffect, setRunUseEffect] = useState(false);
-    const [currentPage, setCurrentPage] = useState(0) // offset for Ajay
-    const [searchOptions, setSearchOptions] = useState();
-    const [totalResults, setTotalResults] = useState(0);
-    const [limit, setLimit] = useState(10);
-    const [loading, setLoading] = useState(false);
 
     const handleClose = (modalName) => {
         if (modalName === 'add') {
@@ -42,33 +37,24 @@ export default function Content() {
         }
     }
     const openModal = (modalName, index = '') => {
-        setCitiesData({}) // clear all the data from states when Modal is opend newly
-        setCitiesError({}) // clear all errors
+        setDistrictsData({}) // clear all the data from states when Modal is opend newly
+        setDistrictsError({}) // clear all errors
 
         if (modalName === 'add') {
             setShow(!show)
         } else if (modalName === 'edit') {
-            setCitiesData(cities[index]);
+            setDistrictsData(districts[index]);
             setEditShow(!editShow);
         }
     }
-    const handleChange = (e) => {
-        if (e.target.name === 'state_id') {
-            getDistricts(e.target.value)
-        }
-        setCitiesData({ ...citiesData, [e.target.name]: e.target.value });
-    }
-    const getCities = async () => {
-        var url = Host + Endpoints.getCities;
-        var defaultData = {
-            limit: limit,
-            offset: currentPage,
-        }
-        const result = await Axios.post(url, defaultData);
+
+    const getDistricts = async () => {
+        var url = Host + Endpoints.getDistricts;
+        const result = await Axios.post(url);
         if (result.data.error === true) {
-            errorToast(result.data.title);
+            errorToast(result.data.title)
         } else {
-            setCities(result.data.data.cities);
+            setDistricts(result.data.data.districts);
         }
     }
     const getStates = async () => {
@@ -80,66 +66,46 @@ export default function Content() {
             setStates(result.data.data);
         }
     }
-    const getDistricts = async (stateID) => {
-        var data = {
-            state_id: stateID
-        }
-        var url = Host + Endpoints.getDistricts;
-        const result = await Axios.post(url, data);
-        if (result.data.error === true) {
-            errorToast(result.data.title)
-        } else {
-            setDistricts(result.data.data.districts);
-        }
-    }
     const isValid = () => {
-        if (citiesData.state_id === '' || citiesData.state_id === undefined) {
-            setCitiesError({ 'state_id': 'State name is required' });
-            return false;
-        } else if (citiesData.district_id === '' || citiesData.district_id === undefined) {
-            setCitiesError({ 'district_id': 'District name is required' });
-            return false;
-        } else if (citiesData.city_name === '' || citiesData.city_name === undefined) {
-            setCitiesError({ 'city_name': 'City name is required' });
-            return false;
+        if (districtsData.state_id === '' || districtsData.state_id === undefined) {
+            setDistrictsError({ state_name: 'Please specify state name' });
+            return false
+        } else if (districtsData.district_name === '' || districtsData.district_name === undefined) {
+            setDistrictsError({ district_name: 'Please specify state name' });
         } else {
-            setCitiesError({});
+            setDistrictsError('');
             return true;
         }
     }
-    const addCityBtn = async (e) => {
+    const addDistrictBtn = async (e) => {
         e.preventDefault();
         if (isValid()) {
-            var url = Host + Endpoints.addCity;
-            const result = await Axios.post(url, citiesData, {
+            var url = Host + Endpoints.addDistrict;
+            const result = await Axios.post(url, districtsData, {
                 headers: {
                     token: getUserToken().token
                 }
             });
             if (result.data.error === true) {
                 errorToast(result.data.title);
-                return
             } else {
                 successToast(result.data.title);
                 handleClose('add');
                 setRunUseEffect(!runUseEffect);
             }
         }
-
     }
-    const updateCitBtn = async (e) => {
+    const updateDistrictBtn = async (e) => {
         e.preventDefault();
         if (isValid()) {
-            var url = Host + Endpoints.editCity;
-            console.log("Send this data ===> ", citiesData);
-            const result = await Axios.post(url, citiesData, {
+            var url = Host + Endpoints.editDistrict;
+            const result = await Axios.post(url, districtsData, {
                 headers: {
                     token: getUserToken().token
                 }
             });
             if (result.data.error === true) {
                 errorToast(result.data.title);
-                return
             } else {
                 successToast(result.data.title);
                 handleClose('edit');
@@ -147,23 +113,22 @@ export default function Content() {
             }
         }
     }
-    useEffect(() => {
-        getCities();
-    }, [runUseEffect]);
+    const handleChange = (e) => {
+        setDistrictsData({ ...districtsData, [e.target.name]: e.target.value });
+    }
 
     useEffect(() => {
-        getStates();
         getDistricts();
+        getStates();
     }, [])
     return (
         <>
             <Container fluid className="main-content-container px-4">
-                {/* Page Header */}
                 <Row noGutters className="page-header py-4">
                     <PageTitle
                         sm="4"
-                        title="Manage Cities"
-                        subtitle="Manage Cities"
+                        title="Manage Districts"
+                        subtitle="Manage Districts"
                         className="text-sm-left"
                     />
                 </Row>
@@ -173,11 +138,7 @@ export default function Content() {
                         <Card small className="mb-4">
                             <CardHeader className="border-bottom">
                                 <h6 className="m-0">
-                                    <button
-                                        type="button"
-                                        className="btn btn-success"
-                                        onClick={() => openModal('add')}
-                                    >
+                                    <button type="button" className="btn btn-success" onClick={() => openModal('add')}>
                                         Add
                                     </button>
                                 </h6>
@@ -190,23 +151,19 @@ export default function Content() {
                                                 Sr.
                                             </th>
                                             <th scope="col" className="border-0">
-                                                City
+                                                State
                                             </th>
-                                            <th scope="col" className="border-0">
-                                                District Name
-                                            </th>
-
                                             <th scope="col" className="border-0">
                                                 Action
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {cities.map((value, index) => (
+                                        {districts && districts.map((value, index) => (
                                             <tr key={value.id}>
                                                 <td>{index + 1}</td>
-                                                <td>{value.city_name}</td>
                                                 <td>{value.district_name}</td>
+                                                <td>{value.state_name}</td>
                                                 <td>
                                                     <button
                                                         type="button"
@@ -214,7 +171,6 @@ export default function Content() {
                                                         onClick={() => openModal('edit', index)}
                                                     >
                                                         <i className="material-icons">edit</i>
-
                                                     </button>
                                                 </td>
                                             </tr>
@@ -229,10 +185,9 @@ export default function Content() {
 
                 <Modal size="lg" show={show} onHide={() => handleClose('add')}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Add City</Modal.Title>
+                        <Modal.Title>Add District</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-
                         <FormGroup>
                             <label htmlFor="feInputforState">State</label>
                             <FormSelect id="feInputforState" name="state_id" onChange={(e) => handleChange(e)}>
@@ -243,50 +198,34 @@ export default function Content() {
                                     ))
                                 }
                             </FormSelect>
-                            <p style={errorStyle}>{citiesError.state_id}</p>
+                            <p style={errorStyle}>{districtsError.state_name}</p>
                         </FormGroup>
 
                         <FormGroup>
-                            <label htmlFor="feInputforDistrict">District</label>
-                            <FormSelect id="feInputforDistrict" name="district_id" onChange={(e) => handleChange(e)}>
-                                <option value="">Choose District</option>
-                                {
-                                    districts && districts.map((value, index) => (
-                                        <option value={value.id}>{value.district_name}</option>
-                                    ))
-                                }
-                            </FormSelect>
-                            <p style={errorStyle}>{citiesError.district_id}</p>
+                            <label htmlFor="feInputAddress">District name</label>
+                            <FormInput id="feInputAddress" name="district_name" onChange={(e) => handleChange(e)} />
+                            <p style={errorStyle}>{districtsError.district_name}</p>
                         </FormGroup>
-
-                        <FormGroup>
-                            <label htmlFor="feInputAddress">City name</label>
-                            <FormInput id="feInputAddress" name="city_name" onChange={(e) => handleChange(e)} />
-                            <p style={errorStyle}>{citiesError.city_name}</p>
-                        </FormGroup>
-
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={() => handleClose('add')}>
                             Close
                         </Button>
-                        <Button variant="primary" onClick={addCityBtn}>
+                        <Button variant="primary" onClick={addDistrictBtn}>
                             Add
                         </Button>
                     </Modal.Footer>
                 </Modal>
 
-                {/*Edit Modal  */}
-
+                {/*Edit States Modal */}
                 <Modal size="lg" show={editShow} onHide={() => handleClose('edit')}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Edit City</Modal.Title>
+                        <Modal.Title>Edit State</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-
                         <FormGroup>
                             <label htmlFor="feInputforState">State</label>
-                            <FormSelect id="feInputforState" name="state_id" onChange={(e) => handleChange(e)} value={citiesData.state_id}>
+                            <FormSelect id="feInputforState" name="state_id" onChange={(e) => handleChange(e)} value={districtsData.state_id}>
                                 <option value="">Choose State</option>
                                 {
                                     states && states.map((value, index) => (
@@ -294,26 +233,13 @@ export default function Content() {
                                     ))
                                 }
                             </FormSelect>
-                            <p style={errorStyle}>{citiesError.state_id}</p>
+                            <p style={errorStyle}>{districtsError.state_name}</p>
                         </FormGroup>
 
                         <FormGroup>
-                            <label htmlFor="feInputforDistrict">District</label>
-                            <FormSelect id="feInputforDistrict" name="district_id" onChange={(e) => handleChange(e)} value={citiesData.district_id}>
-                                <option value="">Choose District</option>
-                                {
-                                    districts && districts.map((value, index) => (
-                                        <option value={value.id}>{value.district_name}</option>
-                                    ))
-                                }
-                            </FormSelect>
-                            <p style={errorStyle}>{citiesError.district_id}</p>
-                        </FormGroup>
-
-                        <FormGroup>
-                            <label htmlFor="feInputAddress">City name</label>
-                            <FormInput id="feInputAddress" name="city_name" onChange={(e) => handleChange(e)} defaultValue={citiesData.city_name} />
-                            <p style={errorStyle}>{citiesError.city_name}</p>
+                            <label htmlFor="feInputAddress">District name</label>
+                            <FormInput id="feInputAddress" name="district_name" onChange={(e) => handleChange(e)} defaultValue={districtsData.district_name} />
+                            <p style={errorStyle}>{districtsError.district_name}</p>
                         </FormGroup>
 
                     </Modal.Body>
@@ -321,11 +247,12 @@ export default function Content() {
                         <Button variant="secondary" onClick={() => handleClose('edit')}>
                             Close
                         </Button>
-                        <Button variant="primary" onClick={updateCitBtn}>
+                        <Button variant="primary" onClick={updateDistrictBtn}>
                             Update
                         </Button>
                     </Modal.Footer>
                 </Modal>
+
             </Container>
         </>
     )

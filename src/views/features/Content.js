@@ -53,10 +53,6 @@ const Content = () => {
     // const [states, setStates] = useState([]);
     // const [statesError, setStatesError] = useState();
 
-
-
-
-
     const [runUseEffect, setRunUseEffect] = useState(false);
 
     const [featuresData, setFeaturesData] = useState([]);

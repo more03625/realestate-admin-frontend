@@ -38,8 +38,26 @@ export default function () {
       htmlAfter: ""
     },
     {
+      title: "State",
+      to: "/location/state",
+      htmlBefore: '<i class="material-icons">location_city</i>',
+      htmlAfter: ""
+    },
+    {
+      title: "District",
+      to: "/location/district",
+      htmlBefore: '<i class="material-icons">location_city</i>',
+      htmlAfter: ""
+    },
+    {
       title: "City",
       to: "/location/city",
+      htmlBefore: '<i class="material-icons">location_city</i>',
+      htmlAfter: ""
+    },
+    {
+      title: "Area",
+      to: "/location/area",
       htmlBefore: '<i class="material-icons">location_city</i>',
       htmlAfter: ""
     },
@@ -72,6 +90,11 @@ export default function () {
       title: "News",
       htmlBefore: '<i class="material-icons">vertical_split</i>',
       to: "/news"
+    },
+    {
+      title: "Banners",
+      htmlBefore: '<i class="material-icons">vertical_split</i>',
+      to: "/banners"
     }
     // {
     //   title: "Add New Post",

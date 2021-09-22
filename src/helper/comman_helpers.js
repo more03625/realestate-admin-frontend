@@ -50,7 +50,15 @@ export const Endpoints = {
   getNewsDetails: "/news/getNewsDetails?id=",
   addNews: "/news/addNews",
   editNews: "/news/editNews",
-  deleteNews: "/news/deleteNews?id="
+  deleteNews: "/news/deleteNews?id=",
+  addState: "/admin/addState",
+  editState: "/admin/editState",
+  getDistricts: "/admin/getDistricts",
+  addDistrict: "/admin/addDistrict",
+  editDistrict: "/admin/editDistrict",
+  getAreaAddresses: "/admin/getAreaAddresses",
+  addAreaAddress: "/admin/addAreaAddress",
+  editAreaAddress: "/admin/editAreaAddress"
 
 };
 
@@ -96,15 +104,12 @@ export const cleanObject = (obj) => {
 
 export const convertToCSV = (ArrayOfObjects) => {
   const array = [Object.keys(ArrayOfObjects[0])].concat(ArrayOfObjects);
-
   return array.map((it) => {
-    console.log(Object.values(it).toString())
     return Object.values(it).toString()
   }).join('\n')
 }
 
 export const exportToCSV = (ArrayOfObjects) => {
-  console.log('Thank you for exporting!');
   var encodedUri = encodeURI(convertToCSV(ArrayOfObjects));
   var csv = 'data:text/csv;charset=utf-8,' + encodedUri
   var link = document.createElement("a");

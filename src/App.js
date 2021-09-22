@@ -8,10 +8,14 @@ import "./shards-dashboard/styles/shards-dashboards.1.1.0.min.css";
 
 import Dashboard from "./views/Dashboard/Dashboard";
 import City from "./views/location/City";
+import State from "./views/location/State/State";
+import District from "./views/location/District/District";
+import AreaAddress from "./views/location/AreaAddress/AreaAddress";
 import Sellers from "./views/sellers/Sellers";
 import SellersProperties from "./views/sellersproperties/SellersProperties";
 import Agents from "./views/Agent/Agents";
 import Subscribers from "./views/Subcribers/Subcribers";
+import Banners from "./views/Banners/Banners";
 import Category from "./views/Category/Category";
 import Subcategory from "./views/Subcategory/Subcategory";
 import Features from "./views/features/Feature";
@@ -65,6 +69,15 @@ export default () => (
       <Route path="/location/city">
         <LoggedInProtected component={City} />
       </Route>
+      <Route path="/location/state">
+        <LoggedInProtected component={State} />
+      </Route>
+      <Route path="/location/district">
+        <LoggedInProtected component={District} />
+      </Route>
+      <Route path="/location/area">
+        <LoggedInProtected component={AreaAddress} />
+      </Route>
 
       <Route path="/features">
         <LoggedInProtected component={Features} />
@@ -91,6 +104,9 @@ export default () => (
       </Route>
       <Route path="/logout">
         <LoggedInProtected component={Logout} />
+      </Route>
+      <Route path="/banners">
+        <LoggedInProtected component={Banners} />
       </Route>
 
       <Route exact path="/login">

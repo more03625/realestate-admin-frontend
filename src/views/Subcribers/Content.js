@@ -1,7 +1,3 @@
-import "jquery/dist/jquery.min.js";
-import "datatables.net-dt/js/dataTables.dataTables";
-import "datatables.net-dt/css/jquery.dataTables.min.css";
-import $ from "jquery";
 import React, { useState, useEffect } from "react";
 import {
   Container,
@@ -10,16 +6,13 @@ import {
   Card,
   CardHeader,
   CardBody,
-  FormCheckbox,
   FormGroup,
   FormInput
 } from "shards-react";
 import Axios from "axios";
 import PageTitle from "../../components/common/PageTitle";
 import { Modal, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import Badge from "react-bootstrap/Badge";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer } from 'react-toastify';
 
 import {
   capitalize,
@@ -29,35 +22,53 @@ import {
   errorToast,
   getUserToken
 } from "../../helper/comman_helpers";
-
+import FiltersLogic from '../properties/FiltersLogic'
+import PaginationLogic from '../properties/PaginationLogic'
+import { userStatus } from '../../data/select.json'
 const Content = () => {
-  $(document).ready(function () {
-    setTimeout(function () {
-      $("#example").DataTable();
-    }, 1000);
-
-  });
 
   const [show, setShow] = useState(false);
   const [requiredItem, setRequiredItem] = useState();
   const [users, setUsers] = useState([]);
   const [usersError, setUsersError] = useState();
   const [active, setActive] = useState();
+  // PAGINATIO & FILTER
 
-  const getUsers = () => {
-    Axios.post(url, {
-      "limit": 200
-    }, {
+  const [totalResults, setTotalResults] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0) // offset for Ajay
+  const [searchOptions, setSearchOptions] = useState();
+  const [loading, setLoading] = useState(false);
+  const [limit, setLimit] = useState(10);
+  const [runUseEffect, setRunUseEffect] = useState(false);
+
+  const getUsers = async () => {
+
+    if (searchOptions && searchOptions.limit !== undefined) {
+      setLimit(searchOptions.limit)
+    }
+    setLoading(true);
+
+    var defaultSearchData = {
+      limit: limit,
+      offset: currentPage
+    }
+    var mergedSearchData = Object.assign(defaultSearchData, searchOptions);
+
+    var url = Host + Endpoints.getSubscribers;
+
+    const result = await Axios.post(url, mergedSearchData, {
       headers: {
         token: `${getUserToken().token}`,
       }
-    }).then(response => {
-      if (response.data.error === true) {
-        setUsersError(response.data.title);
-      } else {
-        setUsers(response.data.data.users);
-      }
-    });
+    })
+    if (result.data.error === true) {
+      setUsersError(result.data.title);
+    } else {
+      setUsers(result.data.data.users);
+      setTotalResults(result.data.data.total);
+    }
+    setLoading(false);
+
   };
 
   const updateUser = (userID, userStatus) => {
@@ -94,11 +105,10 @@ const Content = () => {
       ? users[requiredItem]
       : "";
 
-  var url = Host + Endpoints.getSubscribers;
 
   useEffect(() => {
     getUsers();
-  }, [active]);
+  }, [runUseEffect, currentPage]);
 
   return (
     <Container fluid className="main-content-container px-4">
@@ -111,9 +121,19 @@ const Content = () => {
           className="text-sm-left"
         />
       </Row>
-
       <Row>
         <Col>
+          <CardHeader className="border-bottom">
+            <FiltersLogic // My custom Package
+              exportData={users}
+              setCurrentPage={setCurrentPage}
+              setSearchOptions={setSearchOptions}
+              searchOptions={searchOptions}
+              setRunUseEffect={setRunUseEffect}
+              runUseEffect={runUseEffect}
+              status={userStatus}
+            />
+          </CardHeader>
           <Card small className="mb-4">
             <CardHeader className="border-bottom">
               <h6 className="m-0">List of all Sunscribers!</h6>
@@ -168,13 +188,19 @@ const Content = () => {
                         >
                           <i className="material-icons">visibility</i>
                         </button>
-                        
-
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              <PaginationLogic // My custom Package
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
+                totalResults={totalResults}
+                limit={limit}
+                paginationData={users}
+                loading={loading}
+              />
               <ToastContainer />
             </CardBody>
           </Card>
@@ -183,63 +209,63 @@ const Content = () => {
       {/*Are you sure you want to deactive this user?*/}
       <Modal size="lg" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-            <Modal.Title>Subscriber Details</Modal.Title>
+          <Modal.Title>Subscriber Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <FormGroup>
-                <label>Subscriber Name</label>
-                <FormInput readOnly= {true}  defaultValue={modalData && modalData.name !== undefined ? modalData.name : ''} />
-            </FormGroup>
+          <FormGroup>
+            <label>Subscriber Name</label>
+            <FormInput readOnly={true} defaultValue={modalData && modalData.name !== undefined ? modalData.name : ''} />
+          </FormGroup>
 
-            <FormGroup>
-                <label> Email </label>
-                <FormInput readOnly= {true}  defaultValue={modalData && modalData.email !== undefined ? modalData.email : ''} />
-            </FormGroup>
+          <FormGroup>
+            <label> Email </label>
+            <FormInput readOnly={true} defaultValue={modalData && modalData.email !== undefined ? modalData.email : ''} />
+          </FormGroup>
 
-            <FormGroup>
-                <label>Mobile</label>
-                <FormInput readOnly= {true}  defaultValue={modalData && modalData.mobile !== undefined ? modalData.mobile : ''} />
-            </FormGroup>
+          <FormGroup>
+            <label>Mobile</label>
+            <FormInput readOnly={true} defaultValue={modalData && modalData.mobile !== undefined ? modalData.mobile : ''} />
+          </FormGroup>
 
-            <FormGroup>
-                <label>Category</label>
-                <FormInput readOnly= {true}  defaultValue={modalData && modalData.category_name !== undefined ? modalData.category_name : ''} />
-            </FormGroup>
+          <FormGroup>
+            <label>Category</label>
+            <FormInput readOnly={true} defaultValue={modalData && modalData.category_name !== undefined ? modalData.category_name : ''} />
+          </FormGroup>
 
-            <FormGroup>
-                <label>Sub Category</label>
-                <FormInput readOnly= {true}  defaultValue={modalData && modalData.sub_category_name !== undefined ? modalData.sub_category_name : ''} />
-            </FormGroup>
+          <FormGroup>
+            <label>Sub Category</label>
+            <FormInput readOnly={true} defaultValue={modalData && modalData.sub_category_name !== undefined ? modalData.sub_category_name : ''} />
+          </FormGroup>
 
-            <FormGroup>
-                <label>Minimum Price</label>
-                <FormInput readOnly= {true}  defaultValue={modalData && modalData.min_price !== undefined ? modalData.min_price : ''} />
-            </FormGroup>
+          <FormGroup>
+            <label>Minimum Price</label>
+            <FormInput readOnly={true} defaultValue={modalData && modalData.min_price !== undefined ? modalData.min_price : ''} />
+          </FormGroup>
 
-            <FormGroup>
-                <label>Maximum Price</label>
-                <FormInput readOnly= {true} defaultValue={modalData && modalData.max_price !== undefined ? modalData.max_price : ''} />
-            </FormGroup>
+          <FormGroup>
+            <label>Maximum Price</label>
+            <FormInput readOnly={true} defaultValue={modalData && modalData.max_price !== undefined ? modalData.max_price : ''} />
+          </FormGroup>
 
-            <FormGroup>
-                <label>City</label>
-                <FormInput readOnly= {true}  defaultValue={modalData && modalData.city_name !== undefined ? modalData.city_name : ''} />
-            </FormGroup>
+          <FormGroup>
+            <label>City</label>
+            <FormInput readOnly={true} defaultValue={modalData && modalData.city_name !== undefined ? modalData.city_name : ''} />
+          </FormGroup>
 
-            <FormGroup>
-                <label>State</label>
-                <FormInput readOnly= {true} defaultValue={modalData && modalData.state_name !== undefined ? modalData.state_name : ''} />
-            </FormGroup>
+          <FormGroup>
+            <label>State</label>
+            <FormInput readOnly={true} defaultValue={modalData && modalData.state_name !== undefined ? modalData.state_name : ''} />
+          </FormGroup>
         </Modal.Body>
 
         <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-                Close
-            </Button>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
         </Modal.Footer>
-    </Modal>
+      </Modal>
 
-      
+
     </Container>
   );
 };

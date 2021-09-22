@@ -9,10 +9,8 @@ import MainNavbar from "../../components/layout/MainNavbar/MainNavbar";
 import MainSidebar from "../../components/layout/MainSidebar/MainSidebar";
 import MainFooter from "../../components/layout/MainFooter";
 import Content from './Content';
-import { ExportCSV } from "./Export";
-import DataList from "./Datalist";
-import FullRemote from "./FullRemote";
-const Subcategory = () => {
+
+const Banners = () => {
     return (
         <Container fluid>
             <Row>
@@ -26,9 +24,6 @@ const Subcategory = () => {
                 >
                     {<MainNavbar />}
                     <Content />
-
-                    {/*<DataList />*/}
-                    {/*<FullRemote />*/}
                     {<MainFooter />}
                 </Col>
             </Row>
@@ -36,4 +31,4 @@ const Subcategory = () => {
     )
 };
 
-export default Subcategory;
+export default Banners;

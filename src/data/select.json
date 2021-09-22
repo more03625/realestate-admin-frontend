@@ -712,5 +712,16 @@
         "100",
         "250",
         "500"
+    ],
+    "bannerAreas":[
+        "homepage",
+        "buy",
+        "rent",
+        "share",
+        "sold",
+        "findAgent",
+        "login",
+        "register",
+        "forgotPassword"
     ]
 }
