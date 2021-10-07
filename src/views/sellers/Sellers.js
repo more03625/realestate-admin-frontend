@@ -9,6 +9,7 @@ import MainNavbar from "../../components/layout/MainNavbar/MainNavbar";
 import MainSidebar from "../../components/layout/MainSidebar/MainSidebar";
 import MainFooter from "../../components/layout/MainFooter";
 import Content from './Content';
+import TooltipExample from './TooltipExample';
 
 const Sellers = () => {
     return (
@@ -23,7 +24,9 @@ const Sellers = () => {
                     tag="main"
                 >
                     {<MainNavbar />}
+                    {/*<TooltipExample />*/}
                     <Content />
+
                     {<MainFooter />}
                 </Col>
             </Row>

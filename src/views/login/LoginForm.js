@@ -84,7 +84,7 @@ const LoginForm = () => {
                     setTimeout(function () {
                         setLoginStatus(true);
                     }, 1000);
-                    localStorage.setItem("nep-admin-token", JSON.stringify(response.data));
+                    localStorage.setItem("token", JSON.stringify(response.data));
                 }
             });
         }

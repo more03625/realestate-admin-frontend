@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { getUserToken } from '../../helper/comman_helpers'
 
 const LoggedInProtected = (props) => {
     const history = useHistory();
@@ -7,13 +8,15 @@ const LoggedInProtected = (props) => {
     let Component = props.component;
 
     const isLoggedIn = () => {
-        if (!localStorage.getItem('nep-admin-token')) {
-            console.log("Token Absent");
+        if (!localStorage.getItem('token')) {
             history.push("/login");
         } else {
-            console.log(localStorage.getItem('nep-admin-token'))
-            if (window.location.pathname === '/admin/login') {
-                history.push("/dashboard");
+            if (getUserToken().data.type === 'admin') {
+                if (window.location.pathname === '/admin/login') {
+                    history.push("/dashboard")
+                }
+            } else {
+                history.push("/login");
             }
         }
     }

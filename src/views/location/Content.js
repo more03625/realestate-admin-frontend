@@ -12,7 +12,7 @@ import {
     FormSelect
 } from "shards-react";
 import Axios from 'axios';
-import { Endpoints, errorToast, Host, errorStyle, getUserToken, successToast } from '../../helper/comman_helpers'
+import { Endpoints, errorToast, Host, errorStyle, getUserToken, successToast, rowsLimit } from '../../helper/comman_helpers'
 import PageTitle from '../../components/common/PageTitle';
 import { ToastContainer } from 'react-toastify';
 import { Modal, Button } from "react-bootstrap";
@@ -31,7 +31,7 @@ export default function Content() {
     const [currentPage, setCurrentPage] = useState(0) // offset for Ajay
     const [searchOptions, setSearchOptions] = useState();
     const [totalResults, setTotalResults] = useState(0);
-    const [limit, setLimit] = useState(10);
+    const [limit, setLimit] = useState(rowsLimit);
     const [loading, setLoading] = useState(false);
 
     const handleClose = (modalName) => {
@@ -48,6 +48,9 @@ export default function Content() {
         if (modalName === 'add') {
             setShow(!show)
         } else if (modalName === 'edit') {
+
+            getDistricts(cities[index].state_id)
+
             setCitiesData(cities[index]);
             setEditShow(!editShow);
         }
@@ -82,7 +85,9 @@ export default function Content() {
     }
     const getDistricts = async (stateID) => {
         var data = {
-            state_id: stateID
+            state_id: stateID,
+            limit: limit,
+            offset: currentPage
         }
         var url = Host + Endpoints.getDistricts;
         const result = await Axios.post(url, data);

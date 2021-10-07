@@ -26,6 +26,7 @@
         "Semi-Furnished"
     ],
     "propertyStatus":[
+        "draft",
         "pending",
         "active",
         "inactive",
@@ -714,14 +715,24 @@
         "500"
     ],
     "bannerAreas":[
-        "homepage",
         "buy",
         "rent",
         "share",
         "sold",
-        "findAgent",
+        "consultants",
         "login",
         "register",
-        "forgotPassword"
+        "forgot-password",
+        "verification"
+    ],
+    "locationStatus":[
+        "active",
+        "inactive"
+    ],
+    "userTypes":[
+        "agent",
+        "owner",
+        "builder",
+        "franchise"
     ]
 }

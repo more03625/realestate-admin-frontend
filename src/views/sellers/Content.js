@@ -1,7 +1,3 @@
-import "jquery/dist/jquery.min.js";
-import "datatables.net-dt/js/dataTables.dataTables";
-import "datatables.net-dt/css/jquery.dataTables.min.css";
-import $ from "jquery";
 import React, { useState, useEffect } from "react";
 import {
   Container,
@@ -12,7 +8,8 @@ import {
   CardBody,
   FormCheckbox,
   FormGroup,
-  FormInput, FormSelect
+  Tooltip,
+  FormInput, FormSelect,
 } from "shards-react";
 import Axios from "axios";
 import PageTitle from "../../components/common/PageTitle";
@@ -20,14 +17,14 @@ import { Modal, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Badge from "react-bootstrap/Badge";
 import { ToastContainer } from "react-toastify";
-import { userStatus } from '../../data/select.json';
+import { userStatus, userTypes } from '../../data/select.json';
 import {
   capitalize,
   Host,
   Endpoints,
   successToast,
   errorToast,
-  getUserToken, cleanObject
+  getUserToken, cleanObject, rowsLimit
 } from "../../helper/comman_helpers";
 import FiltersLogic from '../../views/properties/FiltersLogic';
 import PaginationLogic from '../../views/properties/PaginationLogic';
@@ -44,10 +41,10 @@ const Content = () => {
   const [runUseEffect, setRunUseEffect] = useState(false);
   const [totalResults, setTotalResults] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [limit, setLimit] = useState(5);
+  const [limit, setLimit] = useState(rowsLimit);
+  const [status, setStatus] = useState();
 
   const getUsers = async () => {
-
     if (searchOptions && searchOptions.limit !== undefined) {
       setLimit(parseInt(searchOptions.limit))
     }
@@ -72,7 +69,7 @@ const Content = () => {
     }
     setLoading(false);
   };
-  const [status, setStatus] = useState();
+
   const updateUser = (userID, userStatus) => {
     var data = {
       user_id: userID,
@@ -110,19 +107,20 @@ const Content = () => {
     setShowSeller(true); // Open Modal
   };
 
-  var modalData =
-    requiredItem !== null || requiredItem !== undefined
-      ? users[requiredItem]
-      : "";
-
+  var modalData = requiredItem !== null || requiredItem !== undefined ? users[requiredItem] : "";
 
   useEffect(() => {
     getUsers();
   }, [runUseEffect, currentPage]);
+  const [toolTip, setToolTip] = useState(false)
+  const toggle = () => {
+    setToolTip(!toolTip)
+  }
 
   return (
     <Container fluid className="main-content-container px-4">
       {/* Page Header */}
+
       <Row noGutters className="page-header py-4">
         <PageTitle
           sm="4"
@@ -143,8 +141,10 @@ const Content = () => {
               setRunUseEffect={setRunUseEffect}
               runUseEffect={runUseEffect}
               status={userStatus}
+              userTypes={userTypes}
             />
           </CardHeader>
+
           <Card small className="mb-4">
             <CardHeader className="border-bottom">
               <h6 className="m-0">List of all Sellers!</h6>
@@ -179,7 +179,7 @@ const Content = () => {
                 <tbody>
                   {users.map((value, index) => (
                     <tr key={value.id}>
-                      <td>{value.id}</td>
+                      <td>{limit * currentPage + (index + 1)}</td>
                       <td>{value.name}</td>
                       <td>{value.email}</td>
                       <td>{value.mobile}</td>
@@ -197,7 +197,9 @@ const Content = () => {
                       </td>
                       <td>
 
+
                         <Link
+
                           type="button"
                           className="btn btn-info mr-1"
                           to={`seller/properties/${value.id}`}
@@ -205,6 +207,7 @@ const Content = () => {
                           <i className="material-icons">home</i>
                         </Link>
                         <button
+                          id="viewProperties"
                           type="button"
                           className="btn btn-info mr-1"
                           onClick={() => replaceSellerModalItem(index)}
@@ -241,7 +244,7 @@ const Content = () => {
               <option value="">property status</option>
               {
                 userStatus.map((value, index) => (
-                  <option value={value}>{capitalize(value)}</option>
+                  <option key={index} value={value}>{capitalize(value)}</option>
                 ))
               }
             </FormSelect>

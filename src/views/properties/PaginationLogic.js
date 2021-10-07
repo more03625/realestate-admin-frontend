@@ -54,7 +54,7 @@ const PaginationLogic = ({ setCurrentPage, currentPage, totalResults, limit, pag
                                             currentPage !== 0 ? (
                                                 <li className="page-item" onClick={handlePagination} data-page={currentPage - 1} data-action="previous">
                                                     <Link className="page-link" to={'#'} aria-label="Previous" onClick={handlePagination} data-page={currentPage - 1} data-action="previous">
-                                                        <span aria-hidden="true">&laquo;</span>
+                                                        <span aria-hidden="true" onClick={handlePagination} data-page={currentPage + 1} data-action="next">&laquo;</span>
                                                         <span className="sr-only">Previous</span>
                                                     </Link>
                                                 </li>
@@ -75,7 +75,7 @@ const PaginationLogic = ({ setCurrentPage, currentPage, totalResults, limit, pag
                                             currentPage !== pageNumbers.length - 1 ? ( // because of offset is 0
                                                 <li className="page-item" onClick={handlePagination} data-page={currentPage + 1} data-action="next">
                                                     <Link className="page-link" to={"#"} aria-label="Next" onClick={handlePagination} data-page={currentPage + 1} data-action="next">
-                                                        <span aria-hidden="true">&raquo;</span>
+                                                        <span aria-hidden="true" onClick={handlePagination} data-page={currentPage + 1} data-action="next">&raquo;</span>
                                                         <span className="sr-only">Next</span>
                                                     </Link>
                                                 </li>

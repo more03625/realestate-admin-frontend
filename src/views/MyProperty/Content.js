@@ -18,7 +18,7 @@ import {
     Host,
     Endpoints,
     successToast,
-    errorToast, errorStyle, convertToSlug, FrontEndURL, cleanObject,
+    errorToast, errorStyle, convertToSlug, FrontEndURL, cleanObject, rowsLimit,
     getUserToken
 } from "../../helper/comman_helpers";
 import Axios from 'axios';
@@ -39,7 +39,7 @@ const Content = () => {
     const [currentPage, setCurrentPage] = useState(0) // offset for Ajay
     const [searchOptions, setSearchOptions] = useState();
     const [totalResults, setTotalResults] = useState(0);
-    const [limit, setLimit] = useState(10);
+    const [limit, setLimit] = useState(rowsLimit);
     const [loading, setLoading] = useState(false);
 
     const handleStatusClose = () => setshowStatusModal(false);
@@ -96,7 +96,7 @@ const Content = () => {
         setshowStatusModal(true); // Open Modal
     };
     var modalData = (requiredItem != undefined && requiredItem !== null) ? properties[requiredItem] : '';
-    console.log(modalData);
+    // console.log(modalData);
     const redirectToView = (propertySlug, propertyID) => {
         var url = `${FrontEndURL}property/${propertySlug}/${propertyID}`;
         window.open(url)
@@ -130,7 +130,7 @@ const Content = () => {
                 setRunUseEffect(!runUseEffect);
             }
         } else {
-            console.log('There are some errors@');
+            console.log('Please fill all required feilds!')
         }
     }
 
@@ -201,14 +201,14 @@ const Content = () => {
                                             properties.map((value, index) => (
 
                                                 <tr key={value.id}>
-                                                    <td>{index + 1}</td>
+                                                    <td>{limit * currentPage + (index + 1)}</td>
                                                     <td>
-                                                        <Link to="#" onClick={(e) => redirectToView(convertToSlug(value.title), value.id)}>{value.title.slice(0, 46) + "..."}</Link>
+                                                        <Link to="#" onClick={(e) => redirectToView(value.title === null ? 'draft' : convertToSlug(value.title), value.id)}>{value.title === null ? 'No Title' : value.title.slice(0, 46) + "..."}</Link>
                                                     </td>
-
+                                                    {/*onClick={() => changeStatusModal(index)}*/}
                                                     <td>{value.name_for_contact}</td>
                                                     <td>{value.number_for_contact}</td>
-                                                    <td onClick={() => changeStatusModal(index)} style={{ cursor: "pointer" }}>
+                                                    <td style={{ cursor: "pointer" }}>
                                                         {value.status === 'active' ? (
                                                             <span className="badge badge-success">
                                                                 {capitalize(value.status)}
@@ -222,6 +222,7 @@ const Content = () => {
                                                     <td>
 
                                                         <Link
+                                                            data-toggle="tooltip" data-placement="top" title={'View property'}
                                                             to="#"
                                                             type="button"
                                                             className="btn btn-info mr-1"
@@ -229,8 +230,8 @@ const Content = () => {
                                                         >
                                                             <i className="material-icons">visibility</i>
                                                         </Link>
-
                                                         <Link
+                                                            data-toggle="tooltip" data-placement="top" title={'Edit property'}
                                                             to="#"
                                                             type="button"
                                                             className="btn btn-success mr-1"
@@ -238,12 +239,11 @@ const Content = () => {
                                                         >
                                                             <i className="material-icons">edit</i>
                                                         </Link>
-
-
                                                         {
                                                             getUserToken().data.id !== value.user_id ?
 
                                                                 <Link
+                                                                    data-toggle="tooltip" data-placement="top" title={'Add charges'}
                                                                     to="#"
                                                                     type="button"
                                                                     className="btn btn-warning mr-1"

@@ -20,7 +20,7 @@ import {
   Endpoints,
   successToast,
   errorToast,
-  getUserToken
+  getUserToken, rowsLimit
 } from "../../helper/comman_helpers";
 import FiltersLogic from '../properties/FiltersLogic'
 import PaginationLogic from '../properties/PaginationLogic'
@@ -38,7 +38,7 @@ const Content = () => {
   const [currentPage, setCurrentPage] = useState(0) // offset for Ajay
   const [searchOptions, setSearchOptions] = useState();
   const [loading, setLoading] = useState(false);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(rowsLimit);
   const [runUseEffect, setRunUseEffect] = useState(false);
 
   const getUsers = async () => {
@@ -165,7 +165,7 @@ const Content = () => {
                 <tbody>
                   {users.map((value, index) => (
                     <tr key={value.id}>
-                      <td>{value.id}</td>
+                      <td>{limit * currentPage + (index + 1)}</td>
                       <td>{value.name}</td>
                       <td>{value.email}</td>
                       <td>{value.mobile}</td>

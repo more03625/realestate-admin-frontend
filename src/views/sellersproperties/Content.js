@@ -18,7 +18,7 @@ import {
     Endpoints,
     successToast,
     errorToast, errorStyle,
-    getUserToken, convertToSlug, FrontEndURL, cleanObject
+    getUserToken, convertToSlug, FrontEndURL, cleanObject, rowsLimit
 } from "../../helper/comman_helpers";
 import $ from "jquery";
 import { useParams } from "react-router-dom";
@@ -41,7 +41,7 @@ const Content = () => {
     const [currentPage, setCurrentPage] = useState(0) // offset for Ajay
     const [searchOptions, setSearchOptions] = useState();
     const [loading, setLoading] = useState(false);
-    const [limit, setLimit] = useState(10);
+    const [limit, setLimit] = useState(rowsLimit);
 
     const [status, setStatus] = useState();
 

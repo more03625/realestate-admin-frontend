@@ -12,12 +12,14 @@ import {
     FormSelect
 } from "shards-react";
 import Axios from 'axios';
-import { Endpoints, errorToast, Host, errorStyle, getUserToken, successToast } from '../../../helper/comman_helpers';
+import { Endpoints, errorToast, Host, errorStyle, getUserToken, successToast, rowsLimit } from '../../../helper/comman_helpers';
 
 import { ToastContainer } from 'react-toastify';
 import { Modal, Button } from "react-bootstrap";
 import PageTitle from '../../../components/common/PageTitle';
-
+import PaginationLogic from '../../properties/PaginationLogic';
+import FiltersLogic from '../../properties/FiltersLogic';
+import { locationStatus } from '../../../data/select.json'
 export default function Content() {
     const [areaAddress, setAreaAddress] = useState([]);
     const [areaAddressData, setAreaAddressData] = useState([]);
@@ -34,7 +36,7 @@ export default function Content() {
     const [currentPage, setCurrentPage] = useState(0) // offset for Ajay
     const [searchOptions, setSearchOptions] = useState();
     const [totalResults, setTotalResults] = useState(0);
-    const [limit, setLimit] = useState(10);
+    const [limit, setLimit] = useState(rowsLimit);
     const [loading, setLoading] = useState(false);
 
     const openModal = (modalName, index = '') => {
@@ -58,18 +60,28 @@ export default function Content() {
         }
     }
     const getArea = async () => {
+        setLoading(true);
         var url = Host + Endpoints.getAreaAddresses;
-        var data = {
-            limit: limit,
-            offset: currentPage,
+        if (searchOptions && searchOptions.limit !== undefined) {
+            setLimit(searchOptions.limit)
         }
-        const result = await Axios.post(url, data);
+
+
+        var defaultSearchData = {
+            limit: limit,
+            offset: currentPage
+        }
+        var mergedSearchData = Object.assign(defaultSearchData, searchOptions);
+
+        const result = await Axios.post(url, mergedSearchData);
         if (result.data.error === true) {
             errorToast(result.data.title)
         } else {
-            console.log(result.data.data.areaAddresses);
+            setTotalResults(result.data.data.total);
             setAreaAddress(result.data.data.areaAddresses);
         }
+        setLoading(false);
+
     }
     const getStates = async () => {
         var url = Host + Endpoints.getStates;
@@ -83,7 +95,9 @@ export default function Content() {
     const getDistricts = async (stateID) => {
         var url = Host + Endpoints.getDistricts;
         var data = {
-            state_id: stateID
+            state_id: stateID,
+            limit: limit,
+            offset: currentPage
         }
         const result = await Axios.post(url, data);
         if (result.data.error === true) {
@@ -175,10 +189,12 @@ export default function Content() {
     }
     useEffect(() => {
         getArea();
-    }, [runUseEffect]);
+    }, [runUseEffect, currentPage]);
     useEffect(() => {
         getStates();
     }, []);
+
+
     return (
         <>
             <Container fluid className="main-content-container px-4">
@@ -194,6 +210,15 @@ export default function Content() {
                 <ToastContainer />
                 <Row>
                     <Col>
+                        <CardHeader className="border-bottom">
+                            <FiltersLogic // My custom Package
+                                setCurrentPage={setCurrentPage}
+                                setSearchOptions={setSearchOptions}
+                                searchOptions={searchOptions}
+                                setRunUseEffect={setRunUseEffect}
+                                runUseEffect={runUseEffect}
+                            />
+                        </CardHeader>
                         <Card small className="mb-4">
                             <CardHeader className="border-bottom">
                                 <h6 className="m-0">
@@ -217,6 +242,8 @@ export default function Content() {
                                                 Area name
                                             </th>
                                             <th scope="col" className="border-0">
+                                                City Name
+                                            </th><th scope="col" className="border-0">
                                                 District Name
                                             </th>
 
@@ -228,8 +255,9 @@ export default function Content() {
                                     <tbody>
                                         {areaAddress && areaAddress.map((value, index) => (
                                             <tr key={value.id}>
-                                                <td>{index + 1}</td>
+                                                <td>{limit * currentPage + (index + 1)}</td>
                                                 <td>{value.name}</td>
+                                                <td>{value.city_name}</td>
                                                 <td>{value.district_name}</td>
                                                 <td>
                                                     <button
@@ -245,6 +273,14 @@ export default function Content() {
                                         ))}
                                     </tbody>
                                 </table>
+                                <PaginationLogic // My custom Package
+                                    setCurrentPage={setCurrentPage}
+                                    currentPage={currentPage}
+                                    totalResults={totalResults}
+                                    limit={limit}
+                                    paginationData={areaAddress}
+                                    loading={loading}
+                                />
                             </CardBody>
                         </Card>
                     </Col>

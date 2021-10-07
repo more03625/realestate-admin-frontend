@@ -6,8 +6,7 @@ import { propertyStatus, paginationLimit } from '../../data/select.json'
 import {
     exportToCSV, capitalize
 } from "../../helper/comman_helpers";
-const FiltersLogic = ({ exportData, setCurrentPage, setSearchOptions, searchOptions, setRunUseEffect, runUseEffect, status }) => {
-    console.log(status)
+const FiltersLogic = ({ exportData, setCurrentPage, setSearchOptions, searchOptions, setRunUseEffect, runUseEffect, status, userTypes }) => {
     const exportCSV = () => {
         exportToCSV(exportData);
     }
@@ -25,6 +24,7 @@ const FiltersLogic = ({ exportData, setCurrentPage, setSearchOptions, searchOpti
     }
     return (
         <>
+            {/*
             <div className="row">
                 <div className="col-md-1 col-6">
                     <FormGroup>
@@ -34,6 +34,7 @@ const FiltersLogic = ({ exportData, setCurrentPage, setSearchOptions, searchOpti
                     </FormGroup>
                 </div>
             </div>
+            */}
             <form onSubmit={handleSubmit}>
                 <div className="row">
                     <div className="col-md-6 col-6">
@@ -42,18 +43,36 @@ const FiltersLogic = ({ exportData, setCurrentPage, setSearchOptions, searchOpti
                         </FormGroup>
                     </div>
 
-                    <div className="col-md-6 col-6">
-                        <FormGroup>
-                            <FormSelect id="feInputState" name="status" onChange={(e) => handleChange(e)}>
-                                <option value="">status</option>
-                                {
-                                    status.map((value, index) => (
-                                        <option key={value} value={value}>{capitalize(value)}</option>
-                                    ))
-                                }
-                            </FormSelect>
-                        </FormGroup>
-                    </div>
+                    {
+                        status !== undefined &&
+                        <div className="col-md-6 col-6">
+                            <FormGroup>
+                                <FormSelect id="feInputState" name="status" onChange={(e) => handleChange(e)}>
+                                    <option value="">status</option>
+                                    {
+                                        status.map((value, index) => (
+                                            <option key={value} value={value}>{capitalize(value)}</option>
+                                        ))
+                                    }
+                                </FormSelect>
+                            </FormGroup>
+                        </div>
+                    }
+                    {
+                        userTypes !== undefined &&
+                        <div className="col-md-6 col-6">
+                            <FormGroup>
+                                <FormSelect id="feInputState" name="user_type" onChange={(e) => handleChange(e)}>
+                                    <option value="">User type</option>
+                                    {
+                                        userTypes.map((value, index) => (
+                                            <option key={value} value={value}>{capitalize(value)}</option>
+                                        ))
+                                    }
+                                </FormSelect>
+                            </FormGroup>
+                        </div>
+                    }
 
 
                     <div className="col-md-6 col-6">

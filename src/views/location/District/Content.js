@@ -50,7 +50,11 @@ export default function Content() {
 
     const getDistricts = async () => {
         var url = Host + Endpoints.getDistricts;
-        const result = await Axios.post(url);
+        var data = {
+            limit: 500,
+            offset: 0
+        }
+        const result = await Axios.post(url, data);
         if (result.data.error === true) {
             errorToast(result.data.title)
         } else {

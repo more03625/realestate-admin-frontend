@@ -1,10 +1,11 @@
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export const Host =
-  window.location.host === "neprealestate.com" ? "http://neprealestate.com:5254" : "http://localhost:5254"; //Node URL
+export const Host = window.location.host === "neprealestate.com" ? "http://neprealestate.com:5254" : "http://localhost:5254"; //Node URL
 
 export const FrontEndURL = window.location.host === "neprealestate.com" ? "http://neprealestate.com/" : "http://localhost:3000/"; // Home Website
+
+export const rowsLimit = 20;
 
 export const capitalize = s => {
   if (typeof s !== "string") return "";
@@ -58,10 +59,13 @@ export const Endpoints = {
   editDistrict: "/admin/editDistrict",
   getAreaAddresses: "/admin/getAreaAddresses",
   addAreaAddress: "/admin/addAreaAddress",
-  editAreaAddress: "/admin/editAreaAddress"
+  editAreaAddress: "/admin/editAreaAddress",
+  getBanners: "/admin/getBanners",
+  addBanner: "/admin/add-banner",
+  editBanner: "/admin/edit-banner",
+  deleteBanner: "/admin/delete-banner",
 
 };
-
 export const successToast = (message = "✅" + " Success!") => {
   toast.success(message, {
     position: "top-center",
@@ -73,7 +77,6 @@ export const successToast = (message = "✅" + " Success!") => {
     progress: undefined
   });
 };
-
 export const errorToast = (message = "❌" + " Error") => {
   toast.error(message, {
     position: "top-center",
@@ -89,9 +92,12 @@ export const errorStyle = {
   color: 'red',
   fontSize: '14px'
 }
-
+export const successStyle = {
+  color: 'green',
+  fontSize: '14px'
+}
 export const getUserToken = () => {
-  return JSON.parse(localStorage.getItem('nep-admin-token'));
+  return JSON.parse(localStorage.getItem('token'));
 }
 export const cleanObject = (obj) => {
   for (var propName in obj) {
@@ -101,14 +107,12 @@ export const cleanObject = (obj) => {
   }
   return obj
 }
-
 export const convertToCSV = (ArrayOfObjects) => {
   const array = [Object.keys(ArrayOfObjects[0])].concat(ArrayOfObjects);
   return array.map((it) => {
     return Object.values(it).toString()
   }).join('\n')
 }
-
 export const exportToCSV = (ArrayOfObjects) => {
   var encodedUri = encodeURI(convertToCSV(ArrayOfObjects));
   var csv = 'data:text/csv;charset=utf-8,' + encodedUri
@@ -117,4 +121,31 @@ export const exportToCSV = (ArrayOfObjects) => {
   link.setAttribute("download", "Properties.csv");
   document.body.appendChild(link);
   link.click();
+}
+export const convertToBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+
+    fileReader.onload = () => {
+      resolve(fileReader.result);
+    };
+
+    fileReader.onerror = (error) => {
+      reject(error);
+    };
+  });
+};
+export function createReader(file, whenReady) {
+  var reader = new FileReader;
+  reader.onload = function (evt) {
+    var image = new Image();
+    image.onload = function (evt) {
+      var width = this.width;
+      var height = this.height;
+      if (whenReady) whenReady(width, height, file);
+    };
+    image.src = evt.target.result;
+  };
+  reader.readAsDataURL(file);
 }

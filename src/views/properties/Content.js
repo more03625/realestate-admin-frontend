@@ -19,7 +19,7 @@ import {
     Endpoints,
     successToast,
     errorToast, errorStyle, convertToSlug, FrontEndURL,
-    getUserToken, cleanObject, exportToCSV
+    getUserToken, cleanObject, exportToCSV, rowsLimit
 } from "../../helper/comman_helpers";
 import Axios from 'axios';
 import { Modal, Button } from "react-bootstrap";
@@ -36,13 +36,11 @@ const Content = () => {
     const [currentPage, setCurrentPage] = useState(0) // offset for Ajay
     const [searchOptions, setSearchOptions] = useState();
     const [loading, setLoading] = useState(false);
-    const [limit, setLimit] = useState(10);
+    const [limit, setLimit] = useState(rowsLimit);
     const [runUseEffect, setRunUseEffect] = useState(false);
     const handleStatusClose = () => setshowStatusModal(false);
 
     const location = useLocation();
-
-
 
     const getProperties = async () => {
         if (searchOptions && searchOptions.limit !== undefined) {
@@ -155,17 +153,19 @@ const Content = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
+
                                         {properties &&
                                             properties.map((value, index) => (
                                                 <tr key={value.id}>
-                                                    <td>{index + 1}</td>
+                                                    <td>{limit * currentPage + (index + 1)}</td>
                                                     <td>
-                                                        <Link to="#" onClick={(e) => redirectToView(convertToSlug(value.title), value.id)}>{value.title.slice(0, 46) + "..."}</Link>
+                                                        <Link to="#" onClick={(e) => redirectToView(value.title === null ? 'draft' : convertToSlug(value.title), value.id)}>
+                                                            {value.title === null ? 'draft' : value.title.slice(0, 46) + "..."}</Link>
                                                     </td>
-
+                                                    {/*onClick={() => changeStatusModal(index)}*/}
                                                     <td>{value.name_for_contact}</td>
                                                     <td>{value.number_for_contact}</td>
-                                                    <td onClick={() => changeStatusModal(index)} style={{ cursor: "pointer" }}>
+                                                    <td style={{ cursor: "pointer" }}>
                                                         {value.status === 'active' ? (
                                                             <span className="badge badge-success">
                                                                 {capitalize(value.status)}
@@ -178,6 +178,7 @@ const Content = () => {
                                                     </td>
                                                     <td>
                                                         <Link
+                                                            data-toggle="tooltip" data-placement="top" title={'View property'}
                                                             to="#"
                                                             type="button"
                                                             className="btn btn-info mr-1"
@@ -187,6 +188,7 @@ const Content = () => {
                                                         </Link>
 
                                                         <Link
+                                                            data-toggle="tooltip" data-placement="top" title={'Edit property'}
                                                             to="#"
                                                             type="button"
                                                             className="btn btn-success mr-1"
@@ -194,16 +196,11 @@ const Content = () => {
                                                         >
                                                             <i className="material-icons">edit</i>
                                                         </Link>
-
-
                                                     </td>
                                                 </tr>
                                             ))}
-
                                     </tbody>
-
                                 </table>
-
                                 <PaginationLogic // My custom Package
                                     setCurrentPage={setCurrentPage}
                                     currentPage={currentPage}
