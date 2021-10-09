@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export const Host = window.location.host === "neprealestate.com" ? "http://neprealestate.com:5254" : "http://localhost:5254"; //Node URL
+export const Host = window.location.host === "realestate-frontend.netlify.app" ? "http://neprealestate.com:5254" : "http://localhost:5254"; //Node URL
 
 export const FrontEndURL = window.location.host === "neprealestate.com" ? "http://neprealestate.com/" : "http://localhost:3000/"; // Home Website
 

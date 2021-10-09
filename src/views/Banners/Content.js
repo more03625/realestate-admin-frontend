@@ -67,9 +67,6 @@ export default function Content() {
         }
     }
     const openModal = (modalName, index = '') => {
-        // setAreaAddressData({}) // clear all the data from states when Modal is opend newly
-        // setAreaAddressError({}) // clear all errors
-
         if (modalName === 'add') {
             setShow(!show)
         } else if (modalName === 'edit') {
@@ -105,8 +102,6 @@ export default function Content() {
         if (isValid()) {
 
             var updatedBannerData = isImageSelected ? bannerData : Object.assign(bannerData, { banner_image: 0 })
-            console.log("bannerData ===>", bannerData);
-            console.log("updatedBannerData ===>", updatedBannerData);
             var url = Host + Endpoints.editBanner;
             const result = await Axios.post(url, updatedBannerData, {
                 headers: {
@@ -144,7 +139,7 @@ export default function Content() {
                             validImages.push(bsImage)
                         ))
                     } else {
-                        setBannerError({ ...bannerError, banner_image: 'Invalid dimesion! `Please check dimensions given below' });
+                        setBannerError({ ...bannerError, banner_image: 'Invalid dimesion! Please check dimensions given below' });
                         setImageInfo({
                             ...imageInfo,
                             banner_image: '',
@@ -269,9 +264,11 @@ export default function Content() {
                             </label>
                             <span>
                                 {
-                                    bannerData.banner_image && JSON.parse("[" + bannerData.banner_image + "]")[0] && JSON.parse("[" + bannerData.banner_image + "]")[0].map((value, index) => {
-                                        return <><a target="_blank" href={Host + value + ".jpg"}><span className="text-success">{`Image ${index + 1}`}</span></a> <br /></>
-                                    })
+                                    /*
+                                     bannerData.banner_image && JSON.parse("[" + bannerData.banner_image + "]")[0] && JSON.parse("[" + bannerData.banner_image + "]")[0].map((value, index) => {
+                                         return <><a target="_blank" href={Host + value + ".jpg"}><span className="text-success">{`Image ${index + 1}`}</span></a> <br /></>
+                                     })
+                                    */
                                 }
                             </span>
                             <p className="text-muted">{imageInfo.size}</p>
